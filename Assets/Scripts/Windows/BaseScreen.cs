@@ -3,8 +3,11 @@ using System.Collections;
 using UnityEngine.EventSystems;
 
 
-public class GenericWindow : MonoBehaviour {
+public class BaseScreen : MonoBehaviour {
+	
 	public GameObject firstSelected;
+
+	public static ScreenManager screenManager;
 
 	protected EventSystem eventSystem {
 		get{ return GameObject.Find ("EventSystem").GetComponent<EventSystem> (); }
@@ -14,7 +17,7 @@ public class GenericWindow : MonoBehaviour {
 		eventSystem.SetSelectedGameObject (firstSelected);
 	}
 
-	public void Open () {
+	public virtual void Open () {
 		Display (true);
 		OnFocus ();
 	}
