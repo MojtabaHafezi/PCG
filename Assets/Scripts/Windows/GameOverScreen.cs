@@ -4,6 +4,7 @@ using System.Collections;
 public class GameOverScreen : BaseScreen {
 
 	public void MainMenuPressed () {
-		screenManager.Open (0);
+		//screenManager.Open (0);
+		OnNextScreen ();
 	}
 }

@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 public class BaseScreen : MonoBehaviour {
 	
 	public GameObject firstSelected;
-
+	public Screens nextScreen;
+	public Screens previousScreen;
 	public static ScreenManager screenManager;
 
 	protected EventSystem eventSystem {
@@ -34,6 +35,12 @@ public class BaseScreen : MonoBehaviour {
 	protected virtual void Awake () {
 		Close ();
 	}
-	
 
+	public void OnNextScreen () {
+		screenManager.Open ((int)nextScreen - 1);
+	}
+
+	public void OnPreveiousScreen () {
+		screenManager.Open ((int)previousScreen - 1);
+	}
 }

@@ -1,0 +1,1 @@
+public enum Screens{None,StartScreen,GameOverScreen}

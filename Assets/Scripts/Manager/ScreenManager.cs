@@ -8,6 +8,7 @@ public class ScreenManager : MonoBehaviour {
 	 * Array of screens, reference passed through unity interface
 	 * 0 = StartScreen, 1 = GameOverScreen, 2 = GameScreen
 	 */
+	[HideInInspector]
 	public BaseScreen[] screens;
 	public int defaultScreen = 0;
 	public int currentScreen;

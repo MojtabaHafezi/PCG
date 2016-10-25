@@ -12,7 +12,8 @@ public class StartScreen : BaseScreen {
 	}
 
 	public void NewGame () {
-		screenManager.Open (1);
+		//screenManager.Open (1);
+		OnNextScreen ();
 	}
 		
 }
