@@ -6,8 +6,6 @@ using UnityEngine.EventSystems;
 public class BaseScreen : MonoBehaviour {
 	
 	public GameObject firstSelected;
-	public Screens nextScreen;
-	public Screens previousScreen;
 	public static ScreenManager screenManager;
 
 	protected EventSystem eventSystem {
@@ -31,16 +29,9 @@ public class BaseScreen : MonoBehaviour {
 		gameObject.SetActive (value);
 	}
 
-	//need to override in child Class for activating instead of auto-closing the window
+	//need to override in child Class for activating instead of auto-closing the window during dev.
 	protected virtual void Awake () {
 		Close ();
 	}
-
-	public void OnNextScreen () {
-		screenManager.Open ((int)nextScreen - 1);
-	}
-
-	public void OnPreveiousScreen () {
-		screenManager.Open ((int)previousScreen - 1);
-	}
+		
 }

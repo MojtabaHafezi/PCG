@@ -4,16 +4,24 @@ using System.Collections;
 public class StartScreen : BaseScreen {
 
 	public void Continue () {
-		Debug.Log ("Continue button pressed");
+		//TODO: LOAD GAME PREFS
+		screenManager.Open((int)Screens.TownScreen);
 	}
 
-	public void Options () {
-		Debug.Log ("Options button pressed");
+	public void Exit () {
+		Debug.Log ("Exit button pressed");
 	}
 
 	public void NewGame () {
-		//screenManager.Open (1);
-		OnNextScreen ();
+		//TODO: NEW GAME PREFS
+		screenManager.Open((int)Screens.TownScreen);
 	}
-		
+
+    
+
+    void Start()
+    {
+        Open();
+    }
+
 }

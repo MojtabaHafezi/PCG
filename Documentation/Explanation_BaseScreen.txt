@@ -1,0 +1,6 @@
+For passing the objects upon system events i need an Eventsystem object which returns the EventSystem of Unity (finding it through its name). 
+Whenever i call OnFocus i will pass the selected Gameobject through the firstSelected GameObject. 
+
+This will be the base class for other screens. The awake method needs to be overwritten by the child classes to not automatically close the windows.
+
+When the Open method gets called, this gameobject gets displayed and the focus is set on. The firstSelected gameobject is for example new game on the startscreen etc. 

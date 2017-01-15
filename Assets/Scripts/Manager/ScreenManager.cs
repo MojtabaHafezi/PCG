@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class ScreenManager : MonoBehaviour {
-	//TODO: Singleton pattern
+	//TODO: Singleton pattern || dependency injection
 
 	/*
 	 * Array of screens, reference passed through unity interface
@@ -10,7 +10,7 @@ public class ScreenManager : MonoBehaviour {
 	 */
 	[HideInInspector]
 	public BaseScreen[] screens;
-	public int defaultScreen = 0;
+	public int defaultScreen;
 	public int currentScreen;
 
 	//return the screen in the array at given index
@@ -36,15 +36,18 @@ public class ScreenManager : MonoBehaviour {
 	}
 
 	public BaseScreen Open (int value) {
+        // within the range of the array
 		if (value < 0 || value >= screens.Length) {
 			return null;
 		}
+
 		currentScreen = value;
 		ToggleVisibility (currentScreen);
 		return GetScreen (currentScreen);
 	}
 
 	void Start () {
+        //each of the BaseScreens can talk to the Screenmanager
 		BaseScreen.screenManager = this;
 		Open (defaultScreen);
 	}
