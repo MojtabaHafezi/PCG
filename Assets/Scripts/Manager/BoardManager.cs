@@ -1,4 +1,13 @@
-﻿using System.Collections;
+﻿//Minor changes were made to the original BoardManager class
+/***************************************************************************************
+*    Title: Scavenger
+*    Author: Unity Technologies
+*    Date: 2017
+*    Code version: unknown
+*    Availability: https://unity3d.com/de/learn/tutorials/projects/2d-roguelike-tutorial
+***************************************************************************************/
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -36,6 +45,7 @@ public class BoardManager : MonoBehaviour
 	public GameObject[] enemyTiles;
 	public GameObject[] itemTiles;
 	public GameObject outerWallTile;
+	public GameObject player;
 
 	//to keep the hierarchy clean (all generated objects get in here)
 	private Transform boardHolder;
@@ -111,8 +121,14 @@ public class BoardManager : MonoBehaviour
 		//Instantiate random number of items and enemies
 		LayoutObjectAtRandom (itemTiles, itemCount.minimum, itemCount.maximum);
 		LayoutObjectAtRandom (enemyTiles, enemyCount.minimum, enemyCount.maximum);
-		//Adding the warp as exit to the boarder object
-		GameObject instance = Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
+		//Adding the warp as exit to the boarder object --- TODO: Random position
+		//	GameObject instance = Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
+		GameObject instance = Instantiate (exit, RandomPosition (), Quaternion.identity);
+
+		instance.transform.SetParent (boardHolder);
+
+		//Add the player instance into the board
+		instance = Instantiate (player, RandomPosition (), Quaternion.identity);
 		instance.transform.SetParent (boardHolder);
 	}
 }
