@@ -14,7 +14,7 @@ using UnityEngine;
 
 public class Player : Movement
 {
-	public float restartLevelDelay = 1f;
+	public float restartLevelDelay = 0.1f;
 	//Delay time in seconds to restart level.
 
 
@@ -35,6 +35,9 @@ public class Player : Movement
 
 		//Call the Start function of the MovingObject base class.
 		base.Start ();
+		Camera.main.transform.parent = this.transform;
+		Camera.main.transform.position = this.transform.position;
+		//CameraController.instance.InDungeon ();
 	}
 
 	private void Update ()
@@ -71,8 +74,10 @@ public class Player : Movement
 	{
 		//Check if the tag of the trigger collided with is Exit.
 		if (other.tag == "Exit") {
+
 			//Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
-			Invoke ("Restart", restartLevelDelay);
+			Restart ();
+
 		}
 
 		//Check if the tag of the trigger collided with is Food.
@@ -102,16 +107,10 @@ public class Player : Movement
 	//Restart reloads the scene when called.
 	private void Restart ()
 	{
-
+		CameraController.instance.OutDungeon ();
 		Destroy (GameObject.Find ("Board"));
 		GameObject.FindObjectOfType<GameManager> ().InitGame ();
 
-	}
-
-
-	//CheckIfGameOver checks if the player is out of health points and if so, ends the game.
-	private void CheckIfGameOver ()
-	{
 
 	}
 }

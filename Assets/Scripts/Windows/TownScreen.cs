@@ -15,6 +15,7 @@ public class TownScreen : BaseScreen
 	{ 
 		screenManager.Open ((int)Screens.DungeonScreen);
 		GameObject.FindObjectOfType<GameManager> ().InitGame ();
+		CameraController.instance.InDungeon ();
 
 	}
 

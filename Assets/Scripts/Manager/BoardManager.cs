@@ -130,5 +130,8 @@ public class BoardManager : MonoBehaviour
 		//Add the player instance into the board
 		instance = Instantiate (player, RandomPosition (), Quaternion.identity);
 		instance.transform.SetParent (boardHolder);
+		//player.transform.position = RandomPosition ();
+
+
 	}
 }

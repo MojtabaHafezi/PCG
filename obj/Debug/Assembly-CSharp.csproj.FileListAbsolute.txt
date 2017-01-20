@@ -24,6 +24,5 @@ D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.PlaymodeTestsRunner.xml
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.Analytics.xml
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.HoloLens.xml
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.VR.xml
-D:\Programmierung\PCGP\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 D:\Programmierung\PCGP\obj\Debug\Assembly-CSharp.dll
 D:\Programmierung\PCGP\obj\Debug\Assembly-CSharp.pdb

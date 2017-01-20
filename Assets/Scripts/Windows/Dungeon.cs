@@ -8,14 +8,15 @@ public class Dungeon : BaseScreen
 
 	public void ReturnTown ()
 	{
+		CameraController.instance.OutDungeon ();
 		Destroy (GameObject.Find ("Board"));
-
 		screenManager.Open ((int)Screens.TownScreen);
 
 	}
 
 	public void ToGameOver ()
 	{
+		CameraController.instance.OutDungeon ();
 		Destroy (GameObject.Find ("Board"));
 		screenManager.Open ((int)Screens.GameOverScreen);
 	}
