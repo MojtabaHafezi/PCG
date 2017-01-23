@@ -7,12 +7,16 @@ public class TownScreen : BaseScreen
 
 	public void OpenCharacter ()
 	{
-		CharacterScreen.SetInTown (true);
+		CharacterScreen.SetLocation (CharacterScreen.Location.Town);
+
+		//CharacterScreen.SetInTown (true);
 		screenManager.Open ((int)Screens.CharacterScreen);
 	}
 
 	public void OpenDungeon ()
 	{ 
+		//TODO: SAVE 
+
 		screenManager.Open ((int)Screens.DungeonScreen);
 		GameObject.FindObjectOfType<GameManager> ().InitGame ();
 		CameraController.instance.InDungeon ();
@@ -38,6 +42,15 @@ public class TownScreen : BaseScreen
 	{
 		//TODO: SAVE 
 		screenManager.Open ((int)Screens.StartScreen);
+	}
+
+	public void OpenPCGDungeon ()
+	{
+		//TODO: SAVE 
+
+		screenManager.Open ((int)Screens.PCGDungeonScreen);
+		GameObject.FindObjectOfType<PCGGameManager> ().InitGame ();
+		CameraController.instance.InDungeon ();
 	}
 
 }

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dungeon : BaseScreen
+public class PCGDungeonScreen : BaseScreen
 {
-
 	public void ReturnTown ()
 	{
 		CameraController.instance.OutDungeon ();
@@ -22,11 +21,9 @@ public class Dungeon : BaseScreen
 
 	public void OpenCharacter ()
 	{
-		CharacterScreen.SetLocation (CharacterScreen.Location.Dungeon);
+		CharacterScreen.SetLocation (CharacterScreen.Location.PCGDungeon);
 
 		//CharacterScreen.SetInTown (false);
 		screenManager.Open ((int)Screens.CharacterScreen);
 	}
-
-
 }

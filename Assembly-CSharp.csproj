@@ -51,6 +51,8 @@
      <Compile Include="Assets\Scripts\Manager\BoardManager.cs" />
      <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
      <Compile Include="Assets\Scripts\Manager\Loader.cs" />
+     <Compile Include="Assets\Scripts\Manager\PCGBoardManager.cs" />
+     <Compile Include="Assets\Scripts\Manager\PCGGameManager.cs" />
      <Compile Include="Assets\Scripts\Manager\ScreenManager.cs" />
      <Compile Include="Assets\Scripts\Mechanic\CameraController.cs" />
      <Compile Include="Assets\Scripts\Mechanic\Movement.cs" />
@@ -60,13 +62,11 @@
      <Compile Include="Assets\Scripts\Windows\Dungeon.cs" />
      <Compile Include="Assets\Scripts\Windows\GameOverScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\GuildScreen.cs" />
+     <Compile Include="Assets\Scripts\Windows\PCGDungeonScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\Screens.cs" />
      <Compile Include="Assets\Scripts\Windows\ShopScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\StartScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\TownScreen.cs" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -81,9 +81,6 @@
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Purchasing">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
