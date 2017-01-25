@@ -1,4 +1,12 @@
-﻿
+﻿//Minor changes were made to the original class
+/***************************************************************************************
+*    Title: Procedural Content Generation for Unity Game Development
+* 	 Chapter 3-7
+*    Author: Ryan Watkins
+*    Date: 2016
+*    Code version: unknown
+*    Availability: https://www.packtpub.com/game-development/procedural-content-generation-unity-game-development
+***************************************************************************************/
 
 using System.Collections;
 using System.Collections.Generic;
@@ -42,11 +50,12 @@ public class PCGGameManager : MonoBehaviour
 	public void InitGame ()
 	{
 		//Call the SetupScene function of the BoardManager script, pass it current level number.
-		boardScript.BoardSetup ();
+		//boardScript.BoardSetup ();
+		boardScript.StartDungeon ();
 	}
 
-	public void UpdateBoard (int horizantal, int vertical)
-	{
-		boardScript.addToBoard (horizantal, vertical);
-	}
+	//	public void UpdateBoard (int horizantal, int vertical)
+	//	{
+	//		boardScript.addToBoard (horizantal, vertical);
+	//	}
 }

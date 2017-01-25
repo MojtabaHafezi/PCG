@@ -66,7 +66,7 @@ public class Player : Movement
 		
 		}
 
-		PCGGameManager.instance.UpdateBoard (horizontal, vertical);
+		//PCGGameManager.instance.UpdateBoard (horizontal, vertical);
 
 	}
 
@@ -80,6 +80,15 @@ public class Player : Movement
 			//Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
 			//Invoke ("Restart", restartLevelDelay);
 			Restart ();
+		}
+
+		//Check if the tag of the trigger collided with is PCGExit.
+		if (other.tag == "PCGExit") {
+
+			//TODO: Animation?
+			//Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
+			//Invoke ("Restart", restartLevelDelay);
+			RestartPCG ();
 		}
 
 		//Check if the tag of the trigger collided with is Food.
@@ -112,5 +121,13 @@ public class Player : Movement
 		CameraController.instance.OutDungeon ();
 		Destroy (GameObject.Find ("Board"));
 		GameObject.FindObjectOfType<GameManager> ().InitGame ();
+	}
+
+
+	private void RestartPCG ()
+	{
+		CameraController.instance.OutDungeon ();
+		Destroy (GameObject.Find ("Board"));
+		GameObject.FindObjectOfType<PCGGameManager> ().InitGame ();
 	}
 }
