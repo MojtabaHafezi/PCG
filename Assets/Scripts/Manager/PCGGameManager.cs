@@ -44,4 +44,9 @@ public class PCGGameManager : MonoBehaviour
 		//Call the SetupScene function of the BoardManager script, pass it current level number.
 		boardScript.BoardSetup ();
 	}
+
+	public void UpdateBoard (int horizantal, int vertical)
+	{
+		boardScript.addToBoard (horizantal, vertical);
+	}
 }

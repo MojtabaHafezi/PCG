@@ -66,6 +66,7 @@ public class Player : Movement
 		
 		}
 
+		PCGGameManager.instance.UpdateBoard (horizontal, vertical);
 
 	}
 
