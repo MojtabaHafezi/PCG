@@ -16,6 +16,7 @@ using Random = UnityEngine.Random;
 
 public class PCGBoardManager : MonoBehaviour
 {
+	
 	//Helper classes Count and Pathtile
 	[Serializable]
 	public class Count

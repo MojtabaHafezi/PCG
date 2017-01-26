@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\Manager\PCGGameManager.cs" />
      <Compile Include="Assets\Scripts\Manager\ScreenManager.cs" />
      <Compile Include="Assets\Scripts\Mechanic\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Mechanic\Chest.cs" />
      <Compile Include="Assets\Scripts\Mechanic\Movement.cs" />
      <Compile Include="Assets\Scripts\Windows\ArenaScript.cs" />
      <Compile Include="Assets\Scripts\Windows\BaseScreen.cs" />
