@@ -11,15 +11,11 @@ public abstract class Movement : MonoBehaviour
 
 	public Vector3 position;
 
-	private Rigidbody2D rb2D;
 
 
 	//Protected, virtual functions can be overridden by inheriting classes.
 	protected virtual void Start ()
 	{
-
-		//Get a component reference to this object's Rigidbody2D
-		rb2D = GetComponent <Rigidbody2D> ();
 
 		position = transform.position;
 	}

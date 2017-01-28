@@ -11,6 +11,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
 
 public class Player : Movement
 {
@@ -23,11 +25,7 @@ public class Player : Movement
 	public AudioClip item3;
 	public AudioClip item4;
 
-
-	// TODO: STATS
-
-
-
+	public Animator animator;
 
 	//Start overrides the Start function of MovingObject
 	protected override void Start ()
@@ -38,6 +36,8 @@ public class Player : Movement
 		Camera.main.transform.parent = this.transform;
 		Camera.main.transform.position = this.transform.position;
 		//CameraController.instance.InDungeon ();
+
+
 	}
 
 	private void Update ()
@@ -92,13 +92,25 @@ public class Player : Movement
 		}
 
 		//Check if the tag of the trigger collided with is Food.
-		else if (other.tag == "Items") {
+		else if (other.tag == "Chest") {
 
 			//TODO: SHOW INTERFACE WITH GENERATED ITEM
 			Debug.Log ("Item found - generation needs to be done");
-			//Disable the food object the player collided with.
+
+			//Add a random sound 
 			AudioManager.instance.RandomizeSfx (item1, item2, item3, item4);
-			other.gameObject.SetActive (false);
+			
+			other.gameObject.GetComponent<Chest> ().Open ();
+
+			if (other.gameObject.GetComponent<Chest> ().randomItem != null) {
+				PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().randomItem);
+			} else {
+				if (other.gameObject.GetComponent<Chest> ().weapon != null) {
+					PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().weapon);
+				}
+			}
+			//Disable the  object the player collided with.
+			//other.gameObject.SetActive (false);
 		}
 
 		//Check if the tag of the trigger collided with is Enemy.

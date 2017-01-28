@@ -14,6 +14,16 @@ using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 
+public enum TileType
+{
+	essential,
+	random,
+	empty,
+	chest,
+	enemy,
+	outer
+}
+
 public class PCGBoardManager : MonoBehaviour
 {
 	
@@ -34,12 +44,12 @@ public class PCGBoardManager : MonoBehaviour
 	[Serializable]
 	public class PathTile
 	{
-		public string type;
+		public TileType type;
 		public Vector2 position;
 		public List<Vector2> adjacentPathTiles;
 
 		//Pathtile constructor saves the type, position and the adjacent tiles
-		public PathTile (string t, Vector2 p, int min, int max, Dictionary<Vector2, Vector2> currentTiles)
+		public PathTile (TileType t, Vector2 p, int min, int max, Dictionary<Vector2, TileType> currentTiles)
 		{
 			type = t;
 			position = p;
@@ -48,10 +58,10 @@ public class PCGBoardManager : MonoBehaviour
 
 		//the adjacent tiles get saved in ea tiles own List
 		//had to be added with a "O" condition for better performance on outer walls
-		public List<Vector2> getAdjacentPath (int minBound, int maxBound, Dictionary<Vector2, Vector2> currentTiles)
+		public List<Vector2> getAdjacentPath (int minBound, int maxBound, Dictionary<Vector2, TileType> currentTiles)
 		{
 			List<Vector2> pathTiles = new List<Vector2> ();
-			if (type != "O") {
+			if (type != TileType.outer) {
 				
 				if (position.y + 1 < maxBound && !currentTiles.ContainsKey (new Vector2 (position.x, position.y + 1))) {
 					pathTiles.Add (new Vector2 (position.x, position.y + 1));
@@ -63,7 +73,7 @@ public class PCGBoardManager : MonoBehaviour
 					pathTiles.Add (new Vector2 (position.x, position.y - 1));
 				}
 				// the essential path is restricted in movement to prevent moving backwards
-				if (position.x - 1 >= minBound && !currentTiles.ContainsKey (new Vector2 (position.x - 1, position.y)) && type != "E") {
+				if (position.x - 1 >= minBound && !currentTiles.ContainsKey (new Vector2 (position.x - 1, position.y)) && type != TileType.essential) {
 					pathTiles.Add (new Vector2 (position.x - 1, position.y));
 				}
 
@@ -106,8 +116,8 @@ public class PCGBoardManager : MonoBehaviour
 	public GameObject playerInstance;
 
 	private Transform boardHolder;
-	private Dictionary<Vector2, Vector2> gridPositions = new Dictionary<Vector2, Vector2> ();
-	private Dictionary<Vector2, Vector2> outerWallPositions = new Dictionary<Vector2, Vector2> ();
+	private Dictionary<Vector2, TileType> gridPositions = new Dictionary<Vector2, TileType> ();
+	private Dictionary<Vector2, TileType> outerWallPositions = new Dictionary<Vector2, TileType> ();
 
 
 
@@ -126,17 +136,23 @@ public class PCGBoardManager : MonoBehaviour
 	}
 
 
-	public void SetDungeonBoard (Dictionary<Vector2,Vector2> dungeonTiles, int bound, Vector2 endPos)
+	public void SetDungeonBoard (Dictionary<Vector2,TileType> dungeonTiles, int bound, Vector2 endPos)
 	{
 		boardHolder = new GameObject ("Board").transform;
 		boardHolder.transform.SetParent (this.gameObject.transform);
 
 		GameObject toInstantiate, instance;
 
-		foreach (KeyValuePair<Vector2,Vector2> tile in dungeonTiles) {
+		foreach (KeyValuePair<Vector2,TileType> tile in dungeonTiles) {
 			toInstantiate = floorTiles [Random.Range (0, floorTiles.Length)];
-			instance = Instantiate (toInstantiate, new Vector3 (tile.Value.x, tile.Value.y, 0f), Quaternion.identity) as GameObject;
+			instance = Instantiate (toInstantiate, new Vector3 (tile.Key.x, tile.Key.y, 0f), Quaternion.identity) as GameObject;
 			instance.transform.SetParent (boardHolder);
+			//if the tile includes a chest
+			if (tile.Value == TileType.chest) {
+				toInstantiate = chestTile;
+				instance = Instantiate (toInstantiate, new Vector3 (tile.Key.x, tile.Key.y), Quaternion.identity) as GameObject;
+				instance.transform.SetParent (boardHolder);
+			}
 		}
 
 		BuildOuterWalls ();
@@ -168,14 +184,14 @@ public class PCGBoardManager : MonoBehaviour
 	private void BuildEssentialPath ()
 	{
 		int randomY = Random.Range (0, maxBound + 1);
-		PathTile ePath = new PathTile ("E", new Vector2 (0, randomY), minBound, maxBound, gridPositions);
+		PathTile ePath = new PathTile (TileType.essential, new Vector2 (0, randomY), minBound, maxBound, gridPositions);
 		startPos = ePath.position;
 
 		int boundTracker = 0;
 
 		while (boundTracker < maxBound) {
 
-			gridPositions.Add (ePath.position, ePath.position);
+			gridPositions.Add (ePath.position, ePath.type);
 
 			int adjacentTileCount = ePath.adjacentPathTiles.Count;
 
@@ -188,7 +204,7 @@ public class PCGBoardManager : MonoBehaviour
 				break;
 			}
 			//Randomisation in the condition to determine the end position even before the maxBound is reached
-			PathTile nextEPath = new PathTile ("E", nextEPathPos, minBound, maxBound, gridPositions);
+			PathTile nextEPath = new PathTile (TileType.essential, nextEPathPos, minBound, maxBound, gridPositions);
 			if (nextEPath.position.x > ePath.position.x || (nextEPath.position.x == maxBound - 1 && Random.Range (0, 2) == 1)) { // Update boundtracker before EPath update
 				++boundTracker;
 			} 
@@ -197,7 +213,7 @@ public class PCGBoardManager : MonoBehaviour
 		}
 
 		if (!gridPositions.ContainsKey (ePath.position))
-			gridPositions.Add (ePath.position, ePath.position);
+			gridPositions.Add (ePath.position, ePath.type);
 
 		endPos = new Vector2 (ePath.position.x, ePath.position.y);
 
@@ -207,10 +223,10 @@ public class PCGBoardManager : MonoBehaviour
 	{
 
 		List<PathTile> pathQueue = new List<PathTile> ();
-		foreach (KeyValuePair<Vector2,Vector2> tile in gridPositions) {
-			Vector2 tilePos = new Vector2 (tile.Value.x, tile.Value.y);
+		foreach (KeyValuePair<Vector2,TileType> tile in gridPositions) {
+			Vector2 tilePos = new Vector2 (tile.Key.x, tile.Key.y);
 			//Random paths being created from the essential path may move to the left
-			pathQueue.Add (new PathTile ("R", tilePos, minBound, maxBound, gridPositions));
+			pathQueue.Add (new PathTile (TileType.random, tilePos, minBound, maxBound, gridPositions));
 		}
 
 		//For each tile in the Queue
@@ -220,16 +236,16 @@ public class PCGBoardManager : MonoBehaviour
 			if (adjacentTileCount != 0) {
 				if (Random.Range (0, 5) == 1) {
 					BuildRandomChamber (tile);
-				} else if (Random.Range (0, 5) == 1 || (tile.type == "R" && adjacentTileCount > 1)) {
+				} else if (Random.Range (0, 5) == 1 || (tile.type == TileType.random && adjacentTileCount > 1)) {
 
 					int randomIndex = Random.Range (0, adjacentTileCount);
 
 					Vector2 newRPathPos = tile.adjacentPathTiles [randomIndex];
 
 					if (!gridPositions.ContainsKey (newRPathPos)) {
-						gridPositions.Add (newRPathPos, newRPathPos);
+						gridPositions.Add (newRPathPos, TileType.random);
 
-						PathTile newRPath = new PathTile ("R", newRPathPos, minBound, maxBound, gridPositions);
+						PathTile newRPath = new PathTile (TileType.random, newRPathPos, minBound, maxBound, gridPositions);
 						pathQueue.Add (newRPath);
 					}
 				}
@@ -239,6 +255,7 @@ public class PCGBoardManager : MonoBehaviour
 		pathQueue.Clear ();
 	}
 
+	//Also adds a chest randomly
 	private void BuildRandomChamber (PathTile tile)
 	{
 		int chamberSize = 3,
@@ -252,7 +269,12 @@ public class PCGBoardManager : MonoBehaviour
 				if (!gridPositions.ContainsKey (chamberTilePos) &&
 				    chamberTilePos.x < maxBound && chamberTilePos.x > 0 &&
 				    chamberTilePos.y < maxBound && chamberTilePos.y > 0)
-					gridPositions.Add (chamberTilePos, chamberTilePos);
+					//chance to create a chest 
+				if (Random.Range (0, 60) == 1) {
+					gridPositions.Add (chamberTilePos, TileType.chest);
+				} else {
+					gridPositions.Add (chamberTilePos, TileType.random);
+				}
 			}
 		}
 	}
@@ -260,9 +282,9 @@ public class PCGBoardManager : MonoBehaviour
 	private void BuildOuterWalls ()
 	{
 		List<PathTile> allTiles = new List<PathTile> ();
-		foreach (KeyValuePair<Vector2, Vector2> tile in gridPositions) {
-			Vector2 tilePos = new Vector2 (tile.Value.x, tile.Value.y);
-			allTiles.Add (new PathTile ("O", tilePos, minBound, maxBound, gridPositions));
+		foreach (KeyValuePair<Vector2, TileType> tile in gridPositions) {
+			Vector2 tilePos = new Vector2 (tile.Key.x, tile.Key.y);
+			allTiles.Add (new PathTile (TileType.outer, tilePos, minBound, maxBound, gridPositions));
 		}
 
 		foreach (PathTile tile in allTiles) {
@@ -271,7 +293,7 @@ public class PCGBoardManager : MonoBehaviour
 				for (int i = 0; i < adjacentTileCount; i++) {
 					Vector2 newOuterWallPos = tile.adjacentPathTiles [i];
 					if (!gridPositions.ContainsKey (newOuterWallPos) && !outerWallPositions.ContainsKey (newOuterWallPos)) {
-						outerWallPositions.Add (newOuterWallPos, newOuterWallPos);
+						outerWallPositions.Add (newOuterWallPos, TileType.outer);
 						GameObject toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
 						GameObject instance = Instantiate (toInstantiate, new Vector3 (newOuterWallPos.x, newOuterWallPos.y, 0), Quaternion.identity) as GameObject;
 						instance.transform.SetParent (boardHolder);

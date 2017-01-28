@@ -53,10 +53,14 @@
      <Compile Include="Assets\Scripts\Manager\Loader.cs" />
      <Compile Include="Assets\Scripts\Manager\PCGBoardManager.cs" />
      <Compile Include="Assets\Scripts\Manager\PCGGameManager.cs" />
+     <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
      <Compile Include="Assets\Scripts\Manager\ScreenManager.cs" />
      <Compile Include="Assets\Scripts\Mechanic\CameraController.cs" />
      <Compile Include="Assets\Scripts\Mechanic\Chest.cs" />
+     <Compile Include="Assets\Scripts\Mechanic\Item.cs" />
      <Compile Include="Assets\Scripts\Mechanic\Movement.cs" />
+     <Compile Include="Assets\Scripts\Mechanic\Weapon.cs" />
+     <Compile Include="Assets\Scripts\Mechanic\WeaponComponents.cs" />
      <Compile Include="Assets\Scripts\Windows\ArenaScript.cs" />
      <Compile Include="Assets\Scripts\Windows\BaseScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\CharacterScreen.cs" />
