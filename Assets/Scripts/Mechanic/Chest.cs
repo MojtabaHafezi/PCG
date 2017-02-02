@@ -19,6 +19,8 @@ public class Chest : MonoBehaviour
 	public Sprite openSprite;
 	public Item randomItem;
 
+	public bool IsOpen{ get; set; }
+
 	public Weapon weapon;
 
 	private SpriteRenderer spriteRenderer;
@@ -41,9 +43,11 @@ public class Chest : MonoBehaviour
 			weapon.AquireWeapon ();
 			toInstantiate = weapon.gameObject;
 		}
+		this.IsOpen = true;
 		GameObject instance = Instantiate (toInstantiate, new Vector3 (transform.position.x, transform.position.y, 0f), Quaternion.identity) as GameObject;
 		instance.transform.SetParent (GameObject.Find ("Board").transform);
 		gameObject.layer = 10;
 		spriteRenderer.sortingLayerName = "Items";
 	}
+
 }

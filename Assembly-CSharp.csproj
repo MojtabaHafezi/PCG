@@ -50,9 +50,9 @@
      <Compile Include="Assets\Scripts\Manager\AudioManager.cs" />
      <Compile Include="Assets\Scripts\Manager\BoardManager.cs" />
      <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
-     <Compile Include="Assets\Scripts\Manager\Loader.cs" />
      <Compile Include="Assets\Scripts\Manager\PCGBoardManager.cs" />
      <Compile Include="Assets\Scripts\Manager\PCGGameManager.cs" />
+     <Compile Include="Assets\Scripts\Manager\PCGSoundManager.cs" />
      <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
      <Compile Include="Assets\Scripts\Manager\ScreenManager.cs" />
      <Compile Include="Assets\Scripts\Mechanic\CameraController.cs" />

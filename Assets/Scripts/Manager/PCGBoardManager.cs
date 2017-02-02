@@ -155,10 +155,10 @@ public class PCGBoardManager : MonoBehaviour
 			}
 		}
 
-		BuildOuterWalls ();
+		//BuildOuterWalls ();
 		//Bad performance -> runs through the complete dungeon to fill with walls
 
-		/*
+
 		//Creates the outer walls
 		for (int x = -1; x < bound + 1; x++) {
 			for (int y = -1; y < bound + 1; y++) {
@@ -169,7 +169,8 @@ public class PCGBoardManager : MonoBehaviour
 				}
 			}
 		}
-		*/
+
+
 
 		toInstantiate = exit;
 		instance = Instantiate (toInstantiate, new Vector3 (endPos.x, endPos.y, 0f), Quaternion.identity) as GameObject;

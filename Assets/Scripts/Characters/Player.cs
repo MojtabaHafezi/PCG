@@ -94,19 +94,20 @@ public class Player : Movement
 		//Check if the tag of the trigger collided with is Food.
 		else if (other.tag == "Chest") {
 
-			//TODO: SHOW INTERFACE WITH GENERATED ITEM
-			Debug.Log ("Item found - generation needs to be done");
+			//Add a random sound and item, only once though
+			if (!other.gameObject.GetComponent<Chest> ().IsOpen) {
+				//TODO: SHOW INTERFACE WITH GENERATED ITEM
+				Debug.Log ("Item found - generation needs to be done");
+				AudioManager.instance.RandomizeSfx (item1, item2, item3, item4);
 
-			//Add a random sound 
-			AudioManager.instance.RandomizeSfx (item1, item2, item3, item4);
-			
-			other.gameObject.GetComponent<Chest> ().Open ();
+				other.gameObject.GetComponent<Chest> ().Open ();
 
-			if (other.gameObject.GetComponent<Chest> ().randomItem != null) {
-				PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().randomItem);
-			} else {
-				if (other.gameObject.GetComponent<Chest> ().weapon != null) {
-					PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().weapon);
+				if (other.gameObject.GetComponent<Chest> ().randomItem != null) {
+					PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().randomItem);
+				} else {
+					if (other.gameObject.GetComponent<Chest> ().weapon != null) {
+						PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().weapon);
+					}
 				}
 			}
 			//Disable the  object the player collided with.

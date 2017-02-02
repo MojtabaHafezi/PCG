@@ -70,7 +70,7 @@ public class Item : MonoBehaviour
 			spriteRenderer.color = level = Color.green;
 			attackMod += Random.Range (4, 10);
 			defenseMod += Random.Range (4, 10);
-		} else if (randomLevel >= 85 && randomLevel < 97) {
+		} else if (randomLevel >= 85 && randomLevel < 98) {
 			spriteRenderer.color = level = Color.yellow;
 			attackMod += Random.Range (15, 25);
 			defenseMod += Random.Range (15, 25);
