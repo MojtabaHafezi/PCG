@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\Characters\Player.cs" />
      <Compile Include="Assets\Scripts\Manager\AudioManager.cs" />
      <Compile Include="Assets\Scripts\Manager\BoardManager.cs" />
+     <Compile Include="Assets\Scripts\Manager\DemoScript.cs" />
      <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
      <Compile Include="Assets\Scripts\Manager\PCGBoardManager.cs" />
      <Compile Include="Assets\Scripts\Manager\PCGGameManager.cs" />
@@ -65,6 +66,7 @@
      <Compile Include="Assets\Scripts\Windows\BaseScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\CharacterScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\Dungeon.cs" />
+     <Compile Include="Assets\Scripts\Windows\Focus.cs" />
      <Compile Include="Assets\Scripts\Windows\GameOverScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\GuildScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\PCGDungeonScreen.cs" />

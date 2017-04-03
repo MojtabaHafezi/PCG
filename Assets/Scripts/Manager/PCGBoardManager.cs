@@ -1,4 +1,4 @@
-﻿//Minor changes were made to the original class
+﻿//Major changes were made to the original class
 /***************************************************************************************
 *    Title: Procedural Content Generation for Unity Game Development
 * 	 Chapter 3-7
@@ -111,7 +111,7 @@ public class PCGBoardManager : MonoBehaviour
 	public GameObject[] outerWallTiles;
 	public GameObject chestTile;
 
-	//public GameObject enemy;
+	public GameObject enemy;
 	public GameObject player;
 	public GameObject playerInstance;
 
@@ -119,15 +119,18 @@ public class PCGBoardManager : MonoBehaviour
 	private Dictionary<Vector2, TileType> gridPositions = new Dictionary<Vector2, TileType> ();
 	private Dictionary<Vector2, TileType> outerWallPositions = new Dictionary<Vector2, TileType> ();
 
-
+	public void Start ()
+	{
+		Random.InitState (1);
+	}
 
 	public void StartDungeon ()
 	{
 		//This is the seed 
-		//Random.InitState (1);
+		//	Random.InitState (3);
 		gridPositions.Clear ();
 		outerWallPositions.Clear ();
-		maxBound = Random.Range (50, 101);
+		maxBound = Random.Range (100, 250);
 
 		BuildEssentialPath ();
 		BuildRandomPath ();
@@ -135,7 +138,7 @@ public class PCGBoardManager : MonoBehaviour
 		SetDungeonBoard (gridPositions, maxBound, endPos);
 	}
 
-
+	//Sets the tiles on the board including chests and also builds outer walls/exit and adds player to instance
 	public void SetDungeonBoard (Dictionary<Vector2,TileType> dungeonTiles, int bound, Vector2 endPos)
 	{
 		boardHolder = new GameObject ("Board").transform;
@@ -152,13 +155,21 @@ public class PCGBoardManager : MonoBehaviour
 				toInstantiate = chestTile;
 				instance = Instantiate (toInstantiate, new Vector3 (tile.Key.x, tile.Key.y), Quaternion.identity) as GameObject;
 				instance.transform.SetParent (boardHolder);
+			} 
+			if (tile.Value == TileType.enemy) {
+				toInstantiate = enemy;
+				instance = Instantiate (toInstantiate, new Vector3 (tile.Key.x, tile.Key.y), Quaternion.identity) as GameObject;
+				instance.transform.SetParent (boardHolder);
 			}
 		}
 
-		//BuildOuterWalls ();
+		//Method creates the outer walls just around the generated dungeon
+		BuildOuterWalls ();
+
+
 		//Bad performance -> runs through the complete dungeon to fill with walls
-
-
+	
+		/*
 		//Creates the outer walls
 		for (int x = -1; x < bound + 1; x++) {
 			for (int y = -1; y < bound + 1; y++) {
@@ -170,7 +181,7 @@ public class PCGBoardManager : MonoBehaviour
 			}
 		}
 
-
+		*/
 
 		toInstantiate = exit;
 		instance = Instantiate (toInstantiate, new Vector3 (endPos.x, endPos.y, 0f), Quaternion.identity) as GameObject;
@@ -187,11 +198,9 @@ public class PCGBoardManager : MonoBehaviour
 		int randomY = Random.Range (0, maxBound + 1);
 		PathTile ePath = new PathTile (TileType.essential, new Vector2 (0, randomY), minBound, maxBound, gridPositions);
 		startPos = ePath.position;
-
 		int boundTracker = 0;
 
 		while (boundTracker < maxBound) {
-
 			gridPositions.Add (ePath.position, ePath.type);
 
 			int adjacentTileCount = ePath.adjacentPathTiles.Count;
@@ -209,15 +218,12 @@ public class PCGBoardManager : MonoBehaviour
 			if (nextEPath.position.x > ePath.position.x || (nextEPath.position.x == maxBound - 1 && Random.Range (0, 2) == 1)) { // Update boundtracker before EPath update
 				++boundTracker;
 			} 
-
 			ePath = nextEPath;
 		}
 
 		if (!gridPositions.ContainsKey (ePath.position))
 			gridPositions.Add (ePath.position, ePath.type);
-
 		endPos = new Vector2 (ePath.position.x, ePath.position.y);
-
 	}
 
 	private void BuildRandomPath ()
@@ -273,6 +279,8 @@ public class PCGBoardManager : MonoBehaviour
 					//chance to create a chest 
 				if (Random.Range (0, 60) == 1) {
 					gridPositions.Add (chamberTilePos, TileType.chest);
+				} else if (Random.Range (0, 60) > 57) {
+					gridPositions.Add (chamberTilePos, TileType.enemy);
 				} else {
 					gridPositions.Add (chamberTilePos, TileType.random);
 				}
@@ -307,86 +315,5 @@ public class PCGBoardManager : MonoBehaviour
 		allTiles.Clear ();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-//Outdated code for creating a random infinite dungeon
-/*
-	 * 
-	 * 
-	 * 
-	 * 
-	 * private void addTiles (Vector2 tileToAdd)
-	{
-		if (!gridPositions.ContainsKey (tileToAdd)) {
-			gridPositions.Add (tileToAdd, tileToAdd);
-			GameObject toInstantiate = floorTiles [Random.Range (0, floorTiles.Length)];
-			GameObject instance = Instantiate (toInstantiate, new Vector3 (tileToAdd.x, tileToAdd.y, 0f), Quaternion.identity) as GameObject;
-			instance.transform.SetParent (boardHolder);
-
-			//Choose at random a wall tile to lay
-			if (Random.Range (0, 3) == 1) {
-				toInstantiate = wallTiles [Random.Range (0, wallTiles.Length)];
-				instance = Instantiate (toInstantiate, new Vector3 (tileToAdd.x, tileToAdd.y, 0f), Quaternion.identity) as GameObject;
-				instance.transform.SetParent (boardHolder);
-			}
-		}
-	}
-
-	public void addToBoard (int horizontal, int vertical)
-	{
-		if (horizontal == 1) {
-			//Check if tiles exist
-			int x = (int)playerInstance.transform.position.x;
-			int sightX = x + 2;
-			for (x += 1; x <= sightX; x++) {
-				int y = (int)playerInstance.transform.position.y;
-				int sightY = y + 1;
-				for (y -= 1; y <= sightY; y++) {
-					addTiles (new Vector2 (x, y));
-				}
-			}
-		} else if (horizontal == -1) {
-			int x = (int)playerInstance.transform.position.x;
-			int sightX = x - 2;
-			for (x -= 1; x >= sightX; x--) {
-				int y = (int)playerInstance.transform.position.y;
-				int sightY = y + 1;
-				for (y -= 1; y <= sightY; y++) {
-					addTiles (new Vector2 (x, y));
-				}
-			}
-		} else if (vertical == 1) {
-			int y = (int)playerInstance.transform.position.y;
-			int sightY = y + 2;
-			for (y += 1; y <= sightY; y++) {
-				int x = (int)playerInstance.transform.position.x;
-				int sightX = x + 1;
-				for (x -= 1; x <= sightX; x++) {
-					addTiles (new Vector2 (x, y));
-				}
-			}
-		} else if (vertical == -1) {
-			int y = (int)playerInstance.transform.position.y;
-			int sightY = y - 2;
-			for (y -= 1; y >= sightY; y--) {
-				int x = (int)playerInstance.transform.position.x;
-				int sightX = x + 1;
-				for (x -= 1; x <= sightX; x++) {
-					addTiles (new Vector2 (x, y));
-				}
-			}
-		}
-	}
-	 * 
-	 * 
-	 * */
 
 

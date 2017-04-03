@@ -21,6 +21,7 @@ public class PCGDungeonScreen : BaseScreen
 
 	public void OpenCharacter ()
 	{
+		CameraController.instance.OutDungeon ();
 		CharacterScreen.SetLocation (CharacterScreen.Location.PCGDungeon);
 
 		//CharacterScreen.SetInTown (false);

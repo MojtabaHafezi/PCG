@@ -42,28 +42,32 @@ public class Player : Movement
 
 	private void Update ()
 	{
-		
-		int horizontal = 0;     //Used to store the horizontal move direction.
-		int vertical = 0;       //Used to store the vertical move direction.
-
-
-		//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
-		horizontal = (int)(Input.GetAxisRaw ("Horizontal"));
-
-		//Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
-		vertical = (int)(Input.GetAxisRaw ("Vertical"));
-
-		//Check if moving horizontally, if so set vertical to zero.
-		if (horizontal != 0) {
+		//Only move out of battle
+		if (!PlayerManager.instance.isFighting) {
 			
-			vertical = 0;
-		}
-
-		//Check if we have a non-zero value for horizontal or vertical
-		if (horizontal != 0 || vertical != 0) {
-			
-			Move (horizontal, vertical);
 		
+			int horizontal = 0;     //Used to store the horizontal move direction.
+			int vertical = 0;       //Used to store the vertical move direction.
+
+
+			//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
+			horizontal = (int)(Input.GetAxisRaw ("Horizontal"));
+
+			//Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
+			vertical = (int)(Input.GetAxisRaw ("Vertical"));
+
+			//Check if moving horizontally, if so set vertical to zero.
+			if (horizontal != 0) {
+			
+				vertical = 0;
+			}
+
+			//Check if we have a non-zero value for horizontal or vertical
+			if (horizontal != 0 || vertical != 0) {
+			
+				Move (horizontal, vertical);
+		
+			}
 		}
 
 		//PCGGameManager.instance.UpdateBoard (horizontal, vertical);
@@ -97,7 +101,6 @@ public class Player : Movement
 			//Add a random sound and item, only once though
 			if (!other.gameObject.GetComponent<Chest> ().IsOpen) {
 				//TODO: SHOW INTERFACE WITH GENERATED ITEM
-				Debug.Log ("Item found - generation needs to be done");
 				AudioManager.instance.RandomizeSfx (item1, item2, item3, item4);
 
 				other.gameObject.GetComponent<Chest> ().Open ();
@@ -117,10 +120,11 @@ public class Player : Movement
 		//Check if the tag of the trigger collided with is Enemy.
 		else if (other.tag == "Enemy") {
 
-			Debug.Log ("Ready for a battle");
+			//Debug.Log ("Ready for a battle");
 
 			//TODO: ANIMATION OR ANYTHING FOR COMMENCING BATTLE
 			//TODO: START A BATTLE HERE
+			PlayerManager.instance.StartBattle (other.gameObject);
 
 			//Disable the object the player collided with if the battle is over (even on running away)
 			other.gameObject.SetActive (false);

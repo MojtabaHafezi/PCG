@@ -44,6 +44,8 @@ public class CharacterScreen : BaseScreen
 
 	private void BackToPCGDungeon ()
 	{
+		
 		screenManager.Open ((int)Screens.PCGDungeonScreen);
+		CameraController.instance.InDungeon ();
 	}
 }

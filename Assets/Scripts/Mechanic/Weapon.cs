@@ -14,6 +14,10 @@ public class Weapon : Item
 		EnableSpriteRender (true);
 	}
 
+	public override void RandomItemInit ()
+	{
+		//
+	}
 
 	public void RandomWeapon ()
 	{
