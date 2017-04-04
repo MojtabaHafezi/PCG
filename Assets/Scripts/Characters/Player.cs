@@ -124,7 +124,7 @@ public class Player : Movement
 
 			//TODO: ANIMATION OR ANYTHING FOR COMMENCING BATTLE
 			//TODO: START A BATTLE HERE
-			PlayerManager.instance.StartBattle (other.gameObject);
+			PlayerManager.instance.StartBattle ();
 
 			//Disable the object the player collided with if the battle is over (even on running away)
 			other.gameObject.SetActive (false);

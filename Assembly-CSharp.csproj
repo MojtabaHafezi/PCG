@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Characters\Enemy.cs" />
      <Compile Include="Assets\Scripts\Characters\Player.cs" />
      <Compile Include="Assets\Scripts\Manager\AudioManager.cs" />
      <Compile Include="Assets\Scripts\Manager\BoardManager.cs" />
@@ -67,6 +68,7 @@
      <Compile Include="Assets\Scripts\Windows\CharacterScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\Dungeon.cs" />
      <Compile Include="Assets\Scripts\Windows\Focus.cs" />
+     <Compile Include="Assets\Scripts\Windows\GUIAttributes.cs" />
      <Compile Include="Assets\Scripts\Windows\GameOverScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\GuildScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\PCGDungeonScreen.cs" />
@@ -74,6 +76,7 @@
      <Compile Include="Assets\Scripts\Windows\ShopScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\StartScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\TownScreen.cs" />
+     <Compile Include="Assets\StatusUpdate.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
