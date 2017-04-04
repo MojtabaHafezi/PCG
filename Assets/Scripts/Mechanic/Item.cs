@@ -46,7 +46,7 @@ public class Item : MonoBehaviour
 	private void SelectItem ()
 	{
 		var itemCount = Enum.GetValues (typeof(itemType)).Length;
-		type = (itemType)Random.Range (0, 1); //itemcount when all items are implemented
+		type = (itemType)Random.Range (0, 2); //itemcount when all items are implemented
 
 		switch (type) {
 		case itemType.glove:

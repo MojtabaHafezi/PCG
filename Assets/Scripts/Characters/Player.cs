@@ -105,10 +105,10 @@ public class Player : Movement
 
 				other.gameObject.GetComponent<Chest> ().Open ();
 
-				if (other.gameObject.GetComponent<Chest> ().randomItem != null) {
+				if (other.gameObject.GetComponent<Chest> ().decision == 1) {
 					PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().randomItem);
 				} else {
-					if (other.gameObject.GetComponent<Chest> ().weapon != null) {
+					if (other.gameObject.GetComponent<Chest> ().decision == 2) {
 						PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().weapon);
 					}
 				}

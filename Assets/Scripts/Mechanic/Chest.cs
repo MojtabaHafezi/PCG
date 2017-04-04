@@ -18,6 +18,7 @@ public class Chest : MonoBehaviour
 
 	public Sprite openSprite;
 	public Item randomItem;
+	public int decision = 0;
 
 	public bool IsOpen{ get; set; }
 
@@ -28,19 +29,23 @@ public class Chest : MonoBehaviour
 	void Awake ()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer> ();
+		decision = 0;
 	}
 
 	public void Open ()
 	{
+		decision = 0;
 		spriteRenderer.sprite = openSprite;
 
 		GameObject toInstantiate = new GameObject ();
 
 		if (Random.Range (0, 2) == 1) {
 			randomItem.RandomItemInit ();
+			decision = 1;
 			toInstantiate = randomItem.gameObject;
 		} else {
-			weapon.AquireWeapon ();
+			decision = 2;
+			weapon.RandomItemInit ();
 			toInstantiate = weapon.gameObject;
 		}
 		this.IsOpen = true;

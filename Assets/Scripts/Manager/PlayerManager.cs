@@ -92,46 +92,61 @@ public class PlayerManager : MonoBehaviour
 	{
 
 		Item itemData = item;
-		ShowMessage (string.Format ("Found an item with attack {0} and def {1}", item.attackMod, item.defenseMod), 2.0f);
-
-
+		String message = "Found ";
+		Item getItem;
 		switch (itemData.type) {
 		case itemType.glove:
-			
-			inventory ["glove"] = itemData;
-			
-			
+			message += "gloves";
+			if (inventory.ContainsKey ("glove")) {
+				inventory.TryGetValue ("glove", out getItem);
+				if ((getItem.attackMod + getItem.defenseMod) < (itemData.attackMod + itemData.defenseMod))
+					inventory ["glove"] = itemData;
+			} else {
+				inventory ["glove"] = itemData;
+			}
 			break;
 		case itemType.boot:
-
-			inventory ["boot"] = itemData;
-
-
+			message += "boots";
+			if (inventory.ContainsKey ("boot")) {
+				inventory.TryGetValue ("boot", out getItem);
+				if ((getItem.attackMod + getItem.defenseMod) < (itemData.attackMod + itemData.defenseMod))
+					inventory ["boot"] = itemData;
+			} else {
+				inventory ["boot"] = itemData;
+			}
 			break;
 		case itemType.weapon:
-			
-			inventory ["weapon"] = itemData;
-				
-		
+			message += "a weapon";
+			if (inventory.ContainsKey ("weapon")) {
+				inventory.TryGetValue ("weapon", out getItem);
+				if ((getItem.attackMod + getItem.defenseMod) < (itemData.attackMod + itemData.defenseMod))
+					inventory ["weapon"] = itemData;
+			} else {
+				inventory ["weapon"] = itemData;
+			}
 			break;
 		}
+		message += string.Format (" with an attack of {0} and a defense of {1}", item.attackMod, item.defenseMod);
+		ShowMessage (message, 2.0f);
 
 		attackMod = 0;
 		defenseMod = 0;
-
 		foreach (KeyValuePair<String, Item> gear in inventory) {
 			attackMod += gear.Value.attackMod;
 			defenseMod += gear.Value.defenseMod;
 		}
+		Debug.Log (inventory.Count);
 
 	}
 
-	public void ShowMessage (string message, float delay)
+	public void ShowMessage (string message, float delayTime)
 	{
 		messageWindow.SetActive (false);
+		messageWindow.GetComponentInChildren<Text> ().text = message;
 		messageWindow.SetActive (true);
 		messageWindow.GetComponentInChildren<Text> ().text = message;
-		closeDelay = delay;
+
+		closeDelay = delayTime;
 		delay = 0;
 		closed = false;
 	}
@@ -150,6 +165,7 @@ public class PlayerManager : MonoBehaviour
 	public void StartBattle ()
 	{
 		battleWindow.SetActive (true);
+		HideActions ();
 		ShowMessage ("Wild monster encountered!", 1.0f);
 		enemy = new Enemy ();
 		CurrentHealth = Health;
@@ -163,9 +179,8 @@ public class PlayerManager : MonoBehaviour
 
 	public void CloseBattle ()
 	{
-		
-		battleWindow.SetActive (false);
 		HideActions ();
+		battleWindow.SetActive (false);
 		enemy = null;
 		isFighting = false;
 		if (IsDead) {
@@ -289,15 +304,20 @@ public class PlayerManager : MonoBehaviour
 		message += string.Format ("\nDamage received: {0}", damage);
 
 
-		if (enemy.CurrentHealth <= 0) {
+		if (!IsDead && enemy.CurrentHealth <= 0) {
+			
+			message += string.Format ("\nYou won! You earned {0} gold!", enemy.Gold);
+			ShowMessage (message, 2.5f);
 			Gold += enemy.Gold;
-			ShowMessage (string.Format ("You won! You earned {0} gold!", enemy.Gold), 2);
+			UpdateStats ();
 			Invoke ("CloseBattle", 1);	
+		} else {
+			UpdateStats ();
+			ShowMessage (message, 2);
 		}
 
 
-		UpdateStats ();
-		ShowMessage (message, 2);
+
 	}
 
 

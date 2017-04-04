@@ -7,26 +7,26 @@ using UnityEngine.UI;
 public class GUIAttributes : MonoBehaviour
 {
 
-	public Text PlayerHP;
-	public Text PlayerGP;
-	public Text PlayerAtt;
-	public Text PlayerDef;
+	public Text playerHP;
+	public Text playerGP;
+	public Text playerAtt;
+	public Text playerDef;
 
-	public Text EnemyHP;
-	public Text EnemyGP;
-	public Text EnemyAtt;
-	public Text EnemyDef;
+	public Text enemyHP;
+	public Text enemyGP;
+	public Text enemyAtt;
+	public Text enemyDef;
 
 	public void UpdateGUI ()
 	{
-		PlayerHP.text = "HP: " + PlayerManager.instance.CurrentHealth;
-		PlayerGP.text = "GP: " + PlayerManager.instance.Gold;
-		PlayerAtt.text = "Att: " + (PlayerManager.instance.Attack + PlayerManager.instance.attackMod);
-		PlayerDef.text = "Def: " + (PlayerManager.instance.Defense + PlayerManager.instance.defenseMod);
+		playerHP.text = "HP: " + PlayerManager.instance.CurrentHealth;
+		playerGP.text = "GP: " + PlayerManager.instance.Gold;
+		playerAtt.text = "Att: " + (PlayerManager.instance.Attack + PlayerManager.instance.attackMod);
+		playerDef.text = "Def: " + (PlayerManager.instance.Defense + PlayerManager.instance.defenseMod);
 
-		EnemyHP.text = "HP: " + PlayerManager.instance.enemy.CurrentHealth;
-		EnemyGP.text = "GP: " + PlayerManager.instance.enemy.Gold;
-		EnemyAtt.text = "Att: " + PlayerManager.instance.enemy.Attack;
-		EnemyDef.text = "Def: " + PlayerManager.instance.enemy.Defense;
+		enemyHP.text = "HP: " + PlayerManager.instance.enemy.CurrentHealth;
+		enemyGP.text = "GP: " + PlayerManager.instance.enemy.Gold;
+		enemyAtt.text = "Att: " + PlayerManager.instance.enemy.Attack;
+		enemyDef.text = "Def: " + PlayerManager.instance.enemy.Defense;
 	}
 }

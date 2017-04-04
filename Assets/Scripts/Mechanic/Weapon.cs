@@ -6,7 +6,7 @@ public class Weapon : Item
 {
 	private WeaponComponents[] weaponsComps;
 
-	public void AquireWeapon ()
+	public void CreateWeapon ()
 	{
 		weaponsComps = GetComponentsInChildren<WeaponComponents> ();
 		RandomWeapon ();
@@ -16,7 +16,8 @@ public class Weapon : Item
 
 	public override void RandomItemInit ()
 	{
-		//
+		//base.RandomItemInit ();
+		CreateWeapon ();
 	}
 
 	public void RandomWeapon ()
@@ -43,6 +44,7 @@ public class Weapon : Item
 			attackMod += Random.Range (40, 55);
 			defenseMod += Random.Range (40, 55);
 		}
+		Debug.Log (string.Format ("Weapon created with att: {0}, def:{1}, type: {2})", attackMod, defenseMod, type));
 
 	}
 
