@@ -1,27 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class StartScreen : BaseScreen {
+public class StartScreen : BaseScreen
+{
 
-	public void Continue () {
+	public void Continue ()
+	{
 		//TODO: LOAD GAME PREFS
-		screenManager.Open((int)Screens.TownScreen);
+		screenManager.Open ((int)Screens.TownScreen);
 	}
 
-	public void Exit () {
+	public void Exit ()
+	{
 		Debug.Log ("Exit button pressed");
+		Application.Quit ();
 	}
 
-	public void NewGame () {
+	public void NewGame ()
+	{
 		//TODO: NEW GAME PREFS
-		screenManager.Open((int)Screens.TownScreen);
+		screenManager.Open ((int)Screens.TownScreen);
 	}
 
     
 
-    void Start()
-    {
-        Open();
-    }
+	void Start ()
+	{
+		Open ();
+	}
 
 }

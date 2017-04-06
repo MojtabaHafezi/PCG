@@ -44,7 +44,7 @@ public class Weapon : Item
 			attackMod += Random.Range (40, 55);
 			defenseMod += Random.Range (40, 55);
 		}
-		Debug.Log (string.Format ("Weapon created with att: {0}, def:{1}, type: {2})", attackMod, defenseMod, type));
+		//Debug.Log (string.Format ("Weapon created with att: {0}, def:{1}, type: {2})", attackMod, defenseMod, type));
 
 	}
 

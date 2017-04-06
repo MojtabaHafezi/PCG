@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class PlayerManager : MonoBehaviour
 	// Battle Window Setup
 	public GameObject battleWindow;
 	public GameObject actionsWindow;
+	public GameObject hudWindow;
 	public bool isFighting;
 
 	//Enemy
@@ -44,6 +46,7 @@ public class PlayerManager : MonoBehaviour
 
 	public GameObject GameOverScreen;
 	public bool IsDead;
+	public bool IsEnemyFleeing;
 
 
 
@@ -63,34 +66,43 @@ public class PlayerManager : MonoBehaviour
 		messageWindow.SetActive (false);
 		battleWindow.SetActive (false);
 		actionsWindow.SetActive (false);
+		hudWindow.SetActive (false);
 		closed = true;
-		isFighting = IsDead = false;
+		isFighting = IsDead = IsEnemyFleeing = false;
 
 		Attack = UnityEngine.Random.Range (10, 12);
 		Defense = UnityEngine.Random.Range (10, 12);
 		Gold = 0;
 		Health = CurrentHealth = 100;
+	}
+
+	void OnDisable ()
+	{
+		messageWindow.SetActive (false);
+		battleWindow.SetActive (false);
+		actionsWindow.SetActive (false);
+		hudWindow.SetActive (false);
 	}
 
 	void OnEnable ()
 	{
-		inventory = new Dictionary<String, Item> ();
+		//inventory = new Dictionary<String, Item> ();
 		closeDelay = 2.0f;
 		messageWindow.SetActive (false);
 		battleWindow.SetActive (false);
 		actionsWindow.SetActive (false);
+		hudWindow.SetActive (true);
 		closed = true;
 		isFighting = IsDead = false;
 
-		Attack = UnityEngine.Random.Range (10, 12);
-		Defense = UnityEngine.Random.Range (10, 12);
-		Gold = 0;
-		Health = CurrentHealth = 100;
+		//Attack = UnityEngine.Random.Range (10, 12);
+		//Defense = UnityEngine.Random.Range (10, 12);
+		//Gold = 0;
+		//Health = CurrentHealth = 100;
 	}
 
 	public  void UpdateInventory (Item item)
 	{
-
 		Item itemData = item;
 		String message = "Found ";
 		Item getItem;
@@ -135,7 +147,6 @@ public class PlayerManager : MonoBehaviour
 			attackMod += gear.Value.attackMod;
 			defenseMod += gear.Value.defenseMod;
 		}
-		Debug.Log (inventory.Count);
 
 	}
 
@@ -165,14 +176,16 @@ public class PlayerManager : MonoBehaviour
 	public void StartBattle ()
 	{
 		battleWindow.SetActive (true);
+		hudWindow.SetActive (false);
 		HideActions ();
 		ShowMessage ("Wild monster encountered!", 1.0f);
 		enemy = new Enemy ();
-		CurrentHealth = Health;
+		//CurrentHealth = Health;
 		playerSlider = GameObject.FindGameObjectWithTag ("PlayerHealth").gameObject.GetComponent<Slider> ();
 		enemySlider = GameObject.FindGameObjectWithTag ("EnemyHealth").gameObject.GetComponent<Slider> ();
 		UpdateStats ();
 		Invoke ("ShowActions", 1);
+		IsEnemyFleeing = false;
 		isFighting = true;
 
 	}
@@ -180,9 +193,10 @@ public class PlayerManager : MonoBehaviour
 	public void CloseBattle ()
 	{
 		HideActions ();
+		hudWindow.SetActive (true);
 		battleWindow.SetActive (false);
 		enemy = null;
-		isFighting = false;
+		isFighting = IsEnemyFleeing = false;
 		if (IsDead) {
 			isFighting = true;
 			Invoke ("GameOver", 1);
@@ -228,10 +242,47 @@ public class PlayerManager : MonoBehaviour
 
 	}
 
-	public void Flee ()
+	public void PlayerFlees ()
 	{
+		string message = "You have chosen to flee. ";
+		int enemyAttack = (int)UnityEngine.Random.Range (0, 2);
 
-		CloseBattle ();
+		bool weaken = true;
+
+		message += " \nYour enemy has chosen: ";
+		switch (enemyAttack) {
+		case 0:
+			message += "Fast Attack.";
+			break;
+		case 1:
+			message += "Normal Attack.";
+			break;
+		case 2:
+			message += "Power Attack.";
+			break;
+		default:
+			break;
+		}
+
+
+		int enemyDamage = enemy.Attack;
+		int enemyDefense = enemy.Defense;
+
+
+		//Player Gets Damage
+		int damage = enemyDamage;
+		if (weaken)
+			damage = Mathf.RoundToInt (damage * 1.5f);
+		int defense = (int)Math.Round ((double)(defenseMod + Defense) * 0.25);
+		Mathf.Max (CurrentHealth -= (damage - defense), 0);
+		message += string.Format ("\nDamage received: {0}", (damage - defense));
+
+		if (!IsDead)
+			message += "\n You got away!";
+		UpdateStats ();
+		ShowMessage (message, 1);
+
+		Invoke ("CloseBattle", 1);
 		
 	}
 
@@ -240,7 +291,7 @@ public class PlayerManager : MonoBehaviour
 	public void DealDamages (int id)
 	{
 		string message = "You have chosen: ";
-		int enemyAttack = (int)UnityEngine.Random.Range (0, 2);
+		int enemyAttack = (int)UnityEngine.Random.Range (0, 3);
 		bool boost = false;
 		bool weaken = false;
 
@@ -269,19 +320,28 @@ public class PlayerManager : MonoBehaviour
 		default:
 			break;
 		}
-		message += " \nYour enemy has chosen: ";
-		switch (enemyAttack) {
-		case 0:
-			message += "Fast Attack.";
-			break;
-		case 1:
-			message += "Normal Attack.";
-			break;
-		case 2:
-			message += "Power Attack.";
-			break;
-		default:
-			break;
+		if (Random.Range (0, 15) == 1) {
+			enemyAttack = 3;
+			EnemyFlees ();
+			message += "\n Your enemy is trying to flee.";
+			boost = true;
+		}
+			
+		if (!IsEnemyFleeing) {
+			message += " \nYour enemy has chosen: ";
+			switch (enemyAttack) {
+			case 0:
+				message += "Fast Attack.";
+				break;
+			case 1:
+				message += "Normal Attack.";
+				break;
+			case 2:
+				message += "Power Attack.";
+				break;
+			default:
+				break;
+			}
 		}
 	
 
@@ -293,33 +353,43 @@ public class PlayerManager : MonoBehaviour
 			damage = Mathf.RoundToInt (damage * 1.5f);
 		int defense = Mathf.RoundToInt (enemyDefense * 0.25f);
 		Mathf.Max (enemy.CurrentHealth -= (damage - defense), 0);
-		message += string.Format ("\nDamage dealt: {0}", damage);
+		message += string.Format ("\nDamage dealt: {0}", (damage - defense));
 
-		//Player Gets Damage
-		damage = enemyDamage;
-		if (weaken)
-			damage = Mathf.RoundToInt (damage * 1.5f);
-		defense = (int)Math.Round ((double)(defenseMod + Defense) * 0.25);
-		Mathf.Max (CurrentHealth -= (damage - defense), 0);
-		message += string.Format ("\nDamage received: {0}", damage);
+		if (!IsEnemyFleeing) {
+			//Player Gets Damage
+			damage = enemyDamage;
+			if (weaken)
+				damage = Mathf.RoundToInt (damage * 1.5f);
+			defense = (int)Math.Round ((double)(defenseMod + Defense) * 0.25);
+			Mathf.Max (CurrentHealth -= (damage - defense), 0);
+			message += string.Format ("\nDamage received: {0}", (damage - defense));
 
+		}
 
 		if (!IsDead && enemy.CurrentHealth <= 0) {
 			
 			message += string.Format ("\nYou won! You earned {0} gold!", enemy.Gold);
 			ShowMessage (message, 2.5f);
 			Gold += enemy.Gold;
+			CurrentHealth = Health;
 			UpdateStats ();
+			Invoke ("CloseBattle", 1);	
+		} else if (IsEnemyFleeing) {
+			message += "\n The enemy got away!";
+			CurrentHealth = Health;
+			UpdateStats ();
+			ShowMessage (message, 2);
 			Invoke ("CloseBattle", 1);	
 		} else {
 			UpdateStats ();
 			ShowMessage (message, 2);
 		}
-
-
-
 	}
 
+	public void EnemyFlees ()
+	{
+		IsEnemyFleeing = true;
+	}
 
 		
 	private void UpdateStats ()
