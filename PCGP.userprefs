@@ -1,19 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Manager\PlayerManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ANN\NeuralNetwork.cs">
     <Files>
-      <File FileName="Assets\Scripts\Mechanic\Item.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Mechanic\Weapon.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Characters\Player.cs" Line="55" Column="4" />
-      <File FileName="Assets\Scripts\Manager\PlayerManager.cs" Line="399" Column="2" />
-      <File FileName="Assets\Scripts\Characters\Enemy.cs" Line="32" Column="33" />
-      <File FileName="Assets\Scripts\Manager\PCGBoardManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Windows\TownScreen.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Windows\BaseScreen.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Manager\AudioManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Windows\PCGDungeonScreen.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Windows\StartScreen.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Windows\GUIAttributes.cs" Line="34" Column="100" />
+      <File FileName="Assets\Scripts\ANN\NeuralNetwork.cs" Line="130" Column="13" />
+      <File FileName="Assets\Scripts\ANN\ControlNetwork.cs" Line="131" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -1,10 +1,11 @@
 D:\Programmierung\PCGP\Temp\bin\Debug\Assembly-CSharp-Editor.dll
-D:\Programmierung\PCGP\Temp\bin\Debug\Assembly-CSharp-Editor.pdb
 D:\Programmierung\PCGP\Temp\bin\Debug\nunit.framework.dll
+D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.dll
+D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.dll
+D:\Programmierung\PCGP\Temp\bin\Debug\Assembly-CSharp-Editor.pdb
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.Advertisements.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.Analytics.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.Android.Extensions.dll
-D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.EditorTestsRunner.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.Graphs.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.HoloLens.dll
@@ -15,7 +16,6 @@ D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.UI.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.VR.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.WindowsStandalone.Extensions.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.Analytics.dll
-D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.HoloLens.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.Networking.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.PlaymodeTestsRunner.dll
