@@ -3,16 +3,17 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Manager\PlayerManager.cs">
     <Files>
       <File FileName="Assets\Scripts\Mechanic\Item.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Mechanic\Weapon.cs" Line="49" Column="3" />
-      <File FileName="Assets\Scripts\Characters\Player.cs" Line="123" Column="11" />
-      <File FileName="Assets\Scripts\Manager\PlayerManager.cs" Line="196" Column="30" />
-      <File FileName="Assets\Scripts\Characters\Enemy.cs" Line="29" Column="30" />
+      <File FileName="Assets\Scripts\Mechanic\Weapon.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Characters\Player.cs" Line="55" Column="4" />
+      <File FileName="Assets\Scripts\Manager\PlayerManager.cs" Line="399" Column="2" />
+      <File FileName="Assets\Scripts\Characters\Enemy.cs" Line="32" Column="33" />
       <File FileName="Assets\Scripts\Manager\PCGBoardManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Windows\TownScreen.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Windows\BaseScreen.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Manager\AudioManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Windows\PCGDungeonScreen.cs" Line="7" Column="1" />
-      <File FileName="Assets\Scripts\Windows\StartScreen.cs" Line="16" Column="23" />
+      <File FileName="Assets\Scripts\Windows\PCGDungeonScreen.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Windows\StartScreen.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Windows\GUIAttributes.cs" Line="34" Column="100" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

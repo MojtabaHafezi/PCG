@@ -20,6 +20,8 @@ public class PlayerManager : MonoBehaviour
 
 	public int Gold { get; set; }
 
+	public int Element{ get; set; }
+
 
 	//Equipment/Inventory related components
 	public int attackMod, defenseMod;
@@ -72,6 +74,7 @@ public class PlayerManager : MonoBehaviour
 
 		Attack = UnityEngine.Random.Range (10, 12);
 		Defense = UnityEngine.Random.Range (10, 12);
+		Element = Random.Range (0, 3);
 		Gold = 0;
 		Health = CurrentHealth = 100;
 	}
@@ -140,6 +143,7 @@ public class PlayerManager : MonoBehaviour
 		}
 		message += string.Format (" with an attack of {0} and a defense of {1}", item.attackMod, item.defenseMod);
 		ShowMessage (message, 2.0f);
+		ToLog (message);
 
 		attackMod = 0;
 		defenseMod = 0;
@@ -281,7 +285,7 @@ public class PlayerManager : MonoBehaviour
 			message += "\n You got away!";
 		UpdateStats ();
 		ShowMessage (message, 1);
-
+		ToLog (message);
 		Invoke ("CloseBattle", 1);
 		
 	}
@@ -291,9 +295,11 @@ public class PlayerManager : MonoBehaviour
 	public void DealDamages (int id)
 	{
 		string message = "You have chosen: ";
-		int enemyAttack = (int)UnityEngine.Random.Range (0, 3);
+		int enemyAttack = (int)UnityEngine.Random.Range (0, 4);
 		bool boost = false;
 		bool weaken = false;
+		bool element = false;
+		bool enemyElement = false;
 
 		switch (id) {
 		case 0: 
@@ -317,11 +323,32 @@ public class PlayerManager : MonoBehaviour
 			if (enemyAttack == 1)
 				boost = true;
 			break;
+		//Special attack
+		case 3:
+			message += "Special Attack: " + GetElement (Element);
+			if (Element == 0) {
+				if (enemy.Element == 2) {
+					element = true;
+					boost = true;
+				}
+
+			} else if (Element == 1) {
+				if (enemy.Element == 0) {
+					element = true;
+					boost = true;
+				}
+					
+			} else if (Element == 3) {
+				if (enemy.Element == 1) {
+					element = false;
+					boost = true;
+				}
+			}
+			break;
 		default:
 			break;
 		}
 		if (Random.Range (0, 15) == 1) {
-			enemyAttack = 3;
 			EnemyFlees ();
 			message += "\n Your enemy is trying to flee.";
 			boost = true;
@@ -339,6 +366,32 @@ public class PlayerManager : MonoBehaviour
 			case 2:
 				message += "Power Attack.";
 				break;
+			case 3:
+				message += "Special Attack " + GetElement (enemy.Element);
+				switch (enemy.Element) {
+				case 0:
+					if (Element == 2) {
+						weaken = true;
+						enemyElement = true;
+					}
+
+					break;
+				case 1:
+					if (Element == 0) {
+						weaken = true;
+						enemyElement = true;
+					}
+					break;
+				case 2: 
+					if (Element == 1) {
+						weaken = true;
+						enemyElement = true;
+					}
+					break;
+				default:
+					break;
+				}
+				break;
 			default:
 				break;
 			}
@@ -351,7 +404,11 @@ public class PlayerManager : MonoBehaviour
 		int damage = Attack + attackMod;
 		if (boost)
 			damage = Mathf.RoundToInt (damage * 1.5f);
+		if (element)
+			damage += Random.Range (3, 8);
 		int defense = Mathf.RoundToInt (enemyDefense * 0.25f);
+		if (element)
+			defense += Random.Range (3, 8);
 		Mathf.Max (enemy.CurrentHealth -= (damage - defense), 0);
 		message += string.Format ("\nDamage dealt: {0}", (damage - defense));
 
@@ -360,7 +417,11 @@ public class PlayerManager : MonoBehaviour
 			damage = enemyDamage;
 			if (weaken)
 				damage = Mathf.RoundToInt (damage * 1.5f);
+			if (enemyElement)
+				damage += Random.Range (5, 15);
 			defense = (int)Math.Round ((double)(defenseMod + Defense) * 0.25);
+			if (enemyElement)
+				defense += Random.Range (3, 8);
 			Mathf.Max (CurrentHealth -= (damage - defense), 0);
 			message += string.Format ("\nDamage received: {0}", (damage - defense));
 
@@ -369,6 +430,7 @@ public class PlayerManager : MonoBehaviour
 		if (!IsDead && enemy.CurrentHealth <= 0) {
 			
 			message += string.Format ("\nYou won! You earned {0} gold!", enemy.Gold);
+			ToLog (message);
 			ShowMessage (message, 2.5f);
 			Gold += enemy.Gold;
 			CurrentHealth = Health;
@@ -378,11 +440,14 @@ public class PlayerManager : MonoBehaviour
 			message += "\n The enemy got away!";
 			CurrentHealth = Health;
 			UpdateStats ();
+			ToLog (message);
 			ShowMessage (message, 2);
 			Invoke ("CloseBattle", 1);	
 		} else {
 			UpdateStats ();
+			ToLog (message);
 			ShowMessage (message, 2);
+
 		}
 	}
 
@@ -402,6 +467,28 @@ public class PlayerManager : MonoBehaviour
 		battleWindow.GetComponent<GUIAttributes> ().UpdateGUI ();
 	}
 
+	public string GetElement (int element)
+	{
+		switch (element) {
+		case 0: 
+			return "Water";
+
+		case 1: 
+			return "Earth";
+
+		case 2: 
+			return "Fire";
+
+		default:
+			return "Nothing";
+
+		}
+	}
+
+	public void ToLog (string message)
+	{
+		Debug.Log (message);
+	}
 
 
 }
