@@ -53,18 +53,62 @@ public class PlayerManager : MonoBehaviour
 
 	//Artifical Neuronal Network
 	public ControlNetwork ANN = new ControlNetwork ();
-	public double[,] Trainingsset = new double[3, 10] {
-		//Health, Player Health, Difference Att, Difference Def, Class difference (3 input) ||out: att, special, flee
-		{ 1.0, 1.0, 0.1, 0.1, 0, 0, 1, 0, 1, 0 },
-		{ 0.5, 1.0, 0.1, 0.1, 1, 0, 0, 0, 0, 1 },
-		{ 1.0, 1.0, 0.1, 0.1, 1, 0, 0, 0, 0, 1 }
+	public  const int TESTNUMBER = 40;
+	//Class difference has 3 patterns, 001, 010, 100 - from good, normal and bad
+
+	//Training data: when the enemy is too weak to begin with -> flee
+	//if the player is weak -> special
+	//if not too much difference in skills -> fight
+	//when player is somewhat weak -> special
+	public double[,] Trainingsset = new double[TESTNUMBER, 11] {
+		//Health, Player Health, Difference Att, Difference Def, Class difference (3 input), Gold of player ||out: att, special, flee
+		{ 1.0, 1.0, 0.1, 0.1, 0, 0, 1, 0.02, 0, 1, 0 },
+		{ 0.5, 1.0, 0.1, 0.1, 1, 0, 0, 0.02, 0, 0, 1 },
+		{ 1.0, 1.0, 0.1, 0.1, 1, 0, 0, 0.02, 0, 0, 1 },
+		{ 0.6, 0.5, 0.575, 0.525, 0, 1, 0, 0.02, 1, 0, 0 },
+		{ 0.9, 0.5, 0.425, 0.375, 0, 1, 0, 0.02, 1, 0, 0 },
+		{ 0.5, 0.75, 0.625, 0.625, 0, 1, 0, 0.02, 1, 0, 0 },
+		{ 0.25, 0.6, 0.4, 0.375, 1, 0, 0, 0.02, 1, 0, 0 },
+		{ 0.25, 0.25, 0.4, 0.375, 1, 0, 0, 0.02, 1, 0, 0 },
+		{ 0.25, 0.25, 0.4, 0.375, 0, 0, 1, 0.02, 0, 1, 0 },
+		{ 0.25, 0.25, 0.4, 0.375, 0, 1, 0, 0.02, 1, 0, 0 },
+		{ 0.75, 0.5, 0.6, 0.6, 1, 0, 0, 0.02, 1, 0, 0 },
+		{ 0.75, 0.5, 0.6, 0.6, 0, 1, 0, 0.02, 1, 0, 0 },
+		{ 0.75, 0.5, 0.6, 0.6, 0, 0, 1, 0.02, 0, 1, 0 },
+		{ 0.5, 0.5, 0.6, 0.6, 0, 0, 1, 0.02, 0, 1, 0 },
+		{ 0.25, 0.5, 0.6, 0.6, 0, 0, 1, 0.02, 0, 1, 0 },
+		{ 0.5, 0.5, 0.5, 0.5, 0, 0, 1, 0.02, 0, 1, 0 },
+		{ 0.5, 0.5, 0.5, 0.5, 0, 1, 0, 0.02, 1, 0, 0 },
+		{ 0.5, 0.5, 0.5, 0.5, 1, 0, 0, 0.02, 1, 0, 0 },
+		{ 0.5, 0.5, 0.35, 0.35, 1, 0, 0, 0.02, 0, 0, 1 },
+		{ 0.6, 0.2, 0.55, 0.55, 0, 1, 0, 0.02, 0, 1, 0 },
+		{ 0.6, 0.2, 0.45, 0.45, 0, 0, 1, 0.02, 0, 1, 0 },
+		{ 0.6, 0.2, 0.65, 0.65, 1, 0, 0, 0.02, 0, 1, 0 },
+		{ 1.0, 1.0, 0.25, 0.25, 0, 0, 1, 0.1, 0, 1, 0 },
+		{ 1.0, 1.0, 0.25, 0.25, 1, 0, 0, 0.5, 1, 0, 0 },
+		{ 1.0, 1.0, 0.15, 0.15, 1, 0, 0, 0.65, 1, 0, 0 },
+		{ 1.0, 1.0, 0.15, 0.15, 0, 1, 0, 0.65, 1, 0, 0 },
+		{ 1.0, .45, 0.15, 0.15, 0, 1, 0, 0.65, 0, 1, 0 },
+		{ .50, .45, 0.45, 0.45, 0, 1, 0, 0.45, 0, 1, 0 },
+		{ .50, .45, 0.45, 0.45, 0, 1, 0, 0.45, 0, 1, 0 },
+		{ .250, .45, 0.65, 0.65, 0, 1, 0, 0.35, 1, 0, 0 },
+		{ .50, .8, 0.45, 0.45, 1, 0, 0, 0.02, 0, 0, 1 },
+		{ .750, .65, 0.35, 0.35, 1, 0, 0, 0.25, 1, 0, 0 },
+		{ .750, .25, 0.3, 0.3, 1, 0, 0, 0.55, 0, 1, 0 },
+		{ .80, .95, 0.25, 0.25, 0, 1, 0, 0.75, 0, 1, 0 },
+		{ .50, .95, 0.45, 0.45, 0, 1, 0, 0.75, 1, 0, 0 },
+		{ .50, .45, 0.75, 0.75, 0, 1, 0, 0.55, 0, 1, 0 },
+		{ .50, .75, 0.65, 0.65, 0, 1, 0, 0.55, 1, 0, 0 },
+		{ .50, .45, 0.45, 0.45, 0, 1, 0, 0.15, 0, 1, 0 },
+		{ .90, .95, 0.25, 0.25, 1, 0, 0, 0.05, 0, 0, 1 },
+		{ .95, .45, 0.15, 0.15, 0, 1, 0, 0.02, 0, 0, 1 }
 
 	};
 
 
 	public void InititalizeANN ()
 	{
-		ANN.Initialize (7, 3, 5);
+		ANN.Initialize (8, 3, 5);
 		ANN.SetLearningRate (0.3);
 		ANN.SetMomentum (true, 0.8);
 	}
@@ -77,10 +121,10 @@ public class PlayerManager : MonoBehaviour
 		string message = "Pre Training";
 		message += ANN.ToStringData ();
 		Debug.Log (message);
-		while ((error > 0.05) && (counter < 50000)) {
+		while ((error > 0.00005)) {
 			error = 0;
 			counter++;
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < TESTNUMBER; i++) {
 				ANN.GiveInput (0, Trainingsset [i, 0]);
 				ANN.GiveInput (1, Trainingsset [i, 1]);
 				ANN.GiveInput (2, Trainingsset [i, 2]);
@@ -88,17 +132,18 @@ public class PlayerManager : MonoBehaviour
 				ANN.GiveInput (4, Trainingsset [i, 4]);
 				ANN.GiveInput (5, Trainingsset [i, 5]);
 				ANN.GiveInput (6, Trainingsset [i, 6]);
+				ANN.GiveInput (7, Trainingsset [i, 7]);
 		
-				ANN.DesiredOutput (0, Trainingsset [i, 7]);
-				ANN.DesiredOutput (1, Trainingsset [i, 8]);
-				ANN.DesiredOutput (2, Trainingsset [i, 9]);
+				ANN.DesiredOutput (0, Trainingsset [i, 8]);
+				ANN.DesiredOutput (1, Trainingsset [i, 9]);
+				ANN.DesiredOutput (2, Trainingsset [i, 10]);
 
 				ANN.FeedForward ();
 				error += ANN.CalculateError ();
 				ANN.BackPropogate ();
 
 			}
-			error = error / 3;
+			error = error / TESTNUMBER;
 		}
 		//Debug.Log (error);
 		Debug.Log (ANN.ToStringData ());
@@ -128,7 +173,7 @@ public class PlayerManager : MonoBehaviour
 		Defense = UnityEngine.Random.Range (10, 12);
 		Element = Random.Range (0, 3);
 		Gold = 0;
-		Health = CurrentHealth = 100;
+		Health = CurrentHealth = Random.Range (100, 200);
 		InititalizeANN ();
 		TrainANN ();
 	}
@@ -464,7 +509,7 @@ public class PlayerManager : MonoBehaviour
 			damage += Random.Range (3, 8);
 		int defense = Mathf.RoundToInt (enemyDefense * 0.45f);
 		if (element)
-			defense += Random.Range (3, 8);
+			defense -= Random.Range (3, 8);
 		Mathf.Max (enemy.CurrentHealth -= (damage - defense), 0);
 		message += string.Format ("\nDamage dealt: {0}", (damage - defense));
 
@@ -477,7 +522,7 @@ public class PlayerManager : MonoBehaviour
 				damage += Random.Range (5, 15);
 			defense = (int)Math.Round ((double)(defenseMod + Defense) * 0.45f);
 			if (enemyElement)
-				defense += Random.Range (3, 8);
+				defense -= Random.Range (3, 8);
 			Mathf.Max (CurrentHealth -= (damage - defense), 0);
 			message += string.Format ("\nDamage received: {0}", (damage - defense));
 

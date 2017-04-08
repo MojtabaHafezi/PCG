@@ -56,7 +56,7 @@ public class Enemy
 
 		Element = Random.Range (0, 3);
 		Gold = Random.Range (0, 100);
-		Health = CurrentHealth = Random.Range (60, 100);
+		Health = CurrentHealth = Random.Range (60, 200);
 		
 	}
 
