@@ -106,9 +106,12 @@ public class Player : Movement
 				other.gameObject.GetComponent<Chest> ().Open ();
 
 				if (other.gameObject.GetComponent<Chest> ().decision == 1) {
-					PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().randomItem);
+					Item newItem = new Item (other.gameObject.GetComponent<Chest> ().randomItem);
+					//PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().randomItem);
+					PlayerManager.instance.UpdateInventory (newItem);
 				} else {
 					if (other.gameObject.GetComponent<Chest> ().decision == 2) {
+						
 						PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().weapon);
 					}
 				}

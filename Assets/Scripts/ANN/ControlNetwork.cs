@@ -9,6 +9,9 @@ public class ControlNetwork
 
 	public void Initialize (int inputNodes, int outputNodes, int hiddenNodes)
 	{
+		Input = new NeuralNetwork ();
+		Output = new NeuralNetwork ();
+		Hidden = new NeuralNetwork ();
 		//Initialize Input Layer
 		Input.numberNodes = inputNodes;
 		Input.numberChildNodes = hiddenNodes;
@@ -67,7 +70,7 @@ public class ControlNetwork
 		Output.CalculateErrors ();
 		Hidden.CalculateErrors ();
 		Hidden.AdjustWeights ();
-		Output.AdjustWeights ();
+		Input.AdjustWeights ();
 	}
 
 	//determine which output neuron gets fired (maximum value of all output neurons)
@@ -117,26 +120,43 @@ public class ControlNetwork
 
 	public string ToStringData ()
 	{
-		string message;
+		string message = "";
 		message += "Input Layer: \n";
 		message += "Node Values: \n";
 		for (int i = 0; i < Input.numberNodes; i++) {
 			message += Input.calcOutput [i] + ";";
 		}
-		message += "Weights: \n";
+		message += "\nWeights: \n";
 		for (int i = 0; i < Input.numberNodes; i++) {
 			for (int j = 0; j < Input.numberChildNodes; j++) {
-				message += Input.weights [i] [j] + ";";
+				message += Input.weights [i, j] + ";";
 			}
 		}
-		message += "Bias Weights: \n";
+		message += "\nBias Weights: \n";
 		for (int j = 0; j < Input.numberChildNodes; j++) {
 			message += Input.biasWeights [j] + ";";
 		}
+		message += "\nHidden Layer: \n";
 
+		message += "Weights: \n";
+		for (int i = 0; i < Hidden.numberNodes; i++) {
+			for (int j = 0; j < Hidden.numberChildNodes; j++) {
+				message += Hidden.weights [i, j] + ";";
+			}
+		}
+		message += "\nBias Weights: \n";
+		for (int j = 0; j < Hidden.numberChildNodes; j++) {
+			message += Hidden.biasWeights [j] + ";";
+		}
 
+		message += "\nOutput Layer: \n";
 
-		
+		for (int i = 0; i < Output.numberNodes; i++) {
+			message += Output.calcOutput [i] + ";";
+		}
+
+		//Debug.Log (message);
+		return message;
 	}
 
 }

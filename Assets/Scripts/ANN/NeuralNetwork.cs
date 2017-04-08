@@ -29,9 +29,9 @@ public class NeuralNetwork
 	public double[] biasValues;
 
 	//two-dimensional array of weight values connecting parent - child nodes
-	public double[][] weights;
+	public double[,] weights;
 	//saves the adjustments done to the weights
-	public double[][] weightChanges;
+	public double[,] weightChanges;
 
 	public NeuralNetwork parent, child;
 
@@ -47,20 +47,33 @@ public class NeuralNetwork
 	//initialize all arrays with 0s and the bias with 1 or -1
 	public void Initialization (int number, NeuralNetwork par, NeuralNetwork chi)
 	{
+		calcOutput = new double[numberNodes];
+		desiredOutput = new double[numberNodes];
+		errors = new double[numberNodes];
+
+
 		if (par != null)
 			this.parent = par;
-		if (chi != null)
+		if (chi != null) {
 			this.child = chi;
+			weights = new double[numberNodes, numberChildNodes];
+			weightChanges = new double[numberNodes, numberChildNodes];
+		}
 		for (int i = 0; i < numberNodes; i++) {
-			calcOutput [i] = desiredOutput [i] = errors [i] = 0;
+			calcOutput [i] = 0;
+			desiredOutput [i] = 0;
+			errors [i] = 0;
 			if (child != null) {
 				//since every parent node is connected to every child node
 				for (int j = 0; j < numberChildNodes; j++) {
-					weights [i] [j] = weightChanges [i] [j] = 0;
+					weights [i, j] = 0;
+					weightChanges [i, j] = 0;
 				}
 			}
 		}
 		if (child != null) {
+			biasValues = new double[numberChildNodes];
+			biasWeights = new double[numberChildNodes];
 			for (int k = 0; k < numberChildNodes; k++) {
 				biasValues [k] = 1;
 				biasWeights [k] = 0;
@@ -78,7 +91,7 @@ public class NeuralNetwork
 		for (int i = 0; i < numberNodes; i++) {
 			for (int j = 0; j < numberChildNodes; j++) {
 				number = Random.Range (min, max);
-				weights [i] [j] = number / 100.0 - 1;
+				weights [i, j] = number / 100.0 - 1;
 			}
 		}
 		for (int k = 0; k < numberChildNodes; k++) {
@@ -97,14 +110,18 @@ public class NeuralNetwork
 			for (int i = 0; i < numberNodes; i++) {
 				sum = 0;
 				for (int j = 0; j < numberParentNodes; j++) {
-					sum += parent.calcOutput [j] * parent.weights [j] [i];
+					sum += parent.calcOutput [j] * parent.weights [j, i];
 				}
 				sum += parent.biasValues [i] * parent.biasWeights [i];
 
-				if (child == null && linear)
+				if (child == null && linear) {
 					calcOutput [i] = sum;
-				else
-					calcOutput [i] = (1.0f / (1 + Mathf.Exp ((float)-sum)));
+					//Debug.Log ("calculated output" + calcOutput [i]);
+				} else {
+					calcOutput [i] = 1.0f / (1 + Mathf.Exp ((float)-sum));
+				}
+
+
 			}
 		}
 	}
@@ -115,9 +132,13 @@ public class NeuralNetwork
 		//output layer has no children
 		if (child == null) {
 			for (int i = 0; i < numberNodes; i++) {
+				
+
 				//derivate of sigmoid function = sigm * (1-sigm)
-				errors [i] = (desiredOutput [i] - calcOutput [i])
-				* calcOutput [i] * (1.0 - calcOutput [i]);
+				double value = calcOutput [i];
+				double desiredValue = desiredOutput [i];
+				errors [i] = (desiredValue - value) * value * (1.0f - value);
+
 			}
 			//input has no parent
 		} else if (parent == null) {
@@ -129,7 +150,7 @@ public class NeuralNetwork
 			for (int i = 0; i < numberNodes; i++) {
 				sum = 0;
 				for (int j = 0; j < numberChildNodes; j++) {
-					sum += child.errors [i] * weights [i] [j];
+					sum += child.errors [j] * weights [i, j];
 				}
 				errors [i] = sum * calcOutput [i] * (1.0 - calcOutput [i]);
 			}
@@ -144,14 +165,14 @@ public class NeuralNetwork
 		if (child != null) {
 			for (int i = 0; i < numberNodes; i++) {
 				for (int j = 0; j < numberChildNodes; j++) {
-					value = learningRate * child.errors [j] * calcOutput [j];
+					value = learningRate * child.errors [j] * calcOutput [i];
 					//if momentum - previous epochs weight changes are also added
 					if (momentum) {
-						weights [i] [j] += value + momentumValue * weightChanges [i] [j];
-						weightChanges [i] [j] = value;
+						weights [i, j] += value + momentumValue * weightChanges [i, j];
+						weightChanges [i, j] = value;
 						//if no momentum is used -> no need to save epoch
 					} else {
-						weights [i] [j] += value;
+						weights [i, j] += value;
 					}
 				}
 			}

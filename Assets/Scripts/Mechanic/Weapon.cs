@@ -6,6 +6,13 @@ public class Weapon : Item
 {
 	private WeaponComponents[] weaponsComps;
 
+	public Weapon (Weapon weapon)
+	{
+		this.type = weapon.type;
+		this.attackMod = weapon.attackMod;
+		this.defenseMod = weapon.defenseMod;
+	}
+
 	public void CreateWeapon ()
 	{
 		weaponsComps = GetComponentsInChildren<WeaponComponents> ();

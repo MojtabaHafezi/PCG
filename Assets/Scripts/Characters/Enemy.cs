@@ -27,11 +27,36 @@ public class Enemy
 
 	public void Instantiate ()
 	{
-		Attack = UnityEngine.Random.Range (6, 12) + Mathf.Abs (PlayerManager.instance.attackMod / 2);
-		Defense = UnityEngine.Random.Range (6, 12) + Mathf.Abs (PlayerManager.instance.defenseMod / 2);
+		int random = Random.Range (0, 6);
+		float factor = 0f;
+		switch (random) {
+		case 0:
+			factor = 0.5f; 
+			break;
+		case 1:
+			factor = 0.75f;
+			break;
+		case 2:
+			factor = 0.9f;
+			break;
+		case 3:
+			factor = 1.1f;
+			break;
+		case 4: 
+			factor = 1.25f;
+			break;
+		case 5: 
+			factor = 1.5f;
+			break;
+		default:
+			break;
+		}
+		Attack = Random.Range (6, 14) + ((int)(PlayerManager.instance.attackMod * factor));
+		Defense = Random.Range (6, 14) + ((int)(PlayerManager.instance.defenseMod * factor));
+
 		Element = Random.Range (0, 3);
 		Gold = Random.Range (0, 100);
-		Health = CurrentHealth = Random.Range (40, 125);
+		Health = CurrentHealth = Random.Range (60, 100);
 		
 	}
 

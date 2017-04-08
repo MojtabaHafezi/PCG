@@ -1,9 +1,8 @@
 D:\Programmierung\PCGP\Temp\bin\Debug\Assembly-CSharp.dll
-D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.dll
-D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.dll
-D:\Programmierung\PCGP\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 D:\Programmierung\PCGP\Temp\bin\Debug\Assembly-CSharp.pdb
+D:\Programmierung\PCGP\Temp\bin\Debug\UnityEditor.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.Analytics.dll
+D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.HoloLens.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.Networking.dll
 D:\Programmierung\PCGP\Temp\bin\Debug\UnityEngine.PlaymodeTestsRunner.dll

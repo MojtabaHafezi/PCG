@@ -51,7 +51,59 @@ public class PlayerManager : MonoBehaviour
 	public bool IsEnemyFleeing;
 
 
+	//Artifical Neuronal Network
+	public ControlNetwork ANN = new ControlNetwork ();
+	public double[,] Trainingsset = new double[3, 10] {
+		//Health, Player Health, Difference Att, Difference Def, Class difference (3 input) ||out: att, special, flee
+		{ 1.0, 1.0, 0.1, 0.1, 0, 0, 1, 0, 1, 0 },
+		{ 0.5, 1.0, 0.1, 0.1, 1, 0, 0, 0, 0, 1 },
+		{ 1.0, 1.0, 0.1, 0.1, 1, 0, 0, 0, 0, 1 }
 
+	};
+
+
+	public void InititalizeANN ()
+	{
+		ANN.Initialize (7, 3, 5);
+		ANN.SetLearningRate (0.3);
+		ANN.SetMomentum (true, 0.8);
+	}
+
+	public void TrainANN ()
+	{
+		Debug.Log (Trainingsset.Length + "Length");
+		double error = 1;
+		int counter = 0;
+		string message = "Pre Training";
+		message += ANN.ToStringData ();
+		Debug.Log (message);
+		while ((error > 0.05) && (counter < 50000)) {
+			error = 0;
+			counter++;
+			for (int i = 0; i < 3; i++) {
+				ANN.GiveInput (0, Trainingsset [i, 0]);
+				ANN.GiveInput (1, Trainingsset [i, 1]);
+				ANN.GiveInput (2, Trainingsset [i, 2]);
+				ANN.GiveInput (3, Trainingsset [i, 3]);
+				ANN.GiveInput (4, Trainingsset [i, 4]);
+				ANN.GiveInput (5, Trainingsset [i, 5]);
+				ANN.GiveInput (6, Trainingsset [i, 6]);
+		
+				ANN.DesiredOutput (0, Trainingsset [i, 7]);
+				ANN.DesiredOutput (1, Trainingsset [i, 8]);
+				ANN.DesiredOutput (2, Trainingsset [i, 9]);
+
+				ANN.FeedForward ();
+				error += ANN.CalculateError ();
+				ANN.BackPropogate ();
+
+			}
+			error = error / 3;
+		}
+		//Debug.Log (error);
+		Debug.Log (ANN.ToStringData ());
+
+	}
 
 	void Awake ()
 	{
@@ -77,6 +129,8 @@ public class PlayerManager : MonoBehaviour
 		Element = Random.Range (0, 3);
 		Gold = 0;
 		Health = CurrentHealth = 100;
+		InititalizeANN ();
+		TrainANN ();
 	}
 
 	void OnDisable ()
@@ -106,38 +160,40 @@ public class PlayerManager : MonoBehaviour
 
 	public  void UpdateInventory (Item item)
 	{
-		Item itemData = item;
+		
 		String message = "Found ";
-		Item getItem;
-		switch (itemData.type) {
+		Item getItem = null;
+		switch (item.type) {
 		case itemType.glove:
 			message += "gloves";
 			if (inventory.ContainsKey ("glove")) {
-				inventory.TryGetValue ("glove", out getItem);
-				if ((getItem.attackMod + getItem.defenseMod) < (itemData.attackMod + itemData.defenseMod))
-					inventory ["glove"] = itemData;
+				getItem = inventory ["glove"];
+				//inventory.TryGetValue ("glove", out getItem);
+				if ((getItem.attackMod + getItem.defenseMod) < (item.attackMod + item.defenseMod)) {
+					inventory ["glove"] = item;
+				}
 			} else {
-				inventory ["glove"] = itemData;
+				inventory ["glove"] = item;
 			}
 			break;
 		case itemType.boot:
 			message += "boots";
 			if (inventory.ContainsKey ("boot")) {
-				inventory.TryGetValue ("boot", out getItem);
-				if ((getItem.attackMod + getItem.defenseMod) < (itemData.attackMod + itemData.defenseMod))
-					inventory ["boot"] = itemData;
+				getItem = inventory ["boot"];
+				if ((getItem.attackMod + getItem.defenseMod) < (item.attackMod + item.defenseMod))
+					inventory ["boot"] = item;
 			} else {
-				inventory ["boot"] = itemData;
+				inventory ["boot"] = item;
 			}
 			break;
 		case itemType.weapon:
 			message += "a weapon";
 			if (inventory.ContainsKey ("weapon")) {
-				inventory.TryGetValue ("weapon", out getItem);
-				if ((getItem.attackMod + getItem.defenseMod) < (itemData.attackMod + itemData.defenseMod))
-					inventory ["weapon"] = itemData;
+				getItem = inventory ["weapon"];
+				if ((getItem.attackMod + getItem.defenseMod) < (item.attackMod + item.defenseMod))
+					inventory ["weapon"] = item;
 			} else {
-				inventory ["weapon"] = itemData;
+				inventory ["weapon"] = item;
 			}
 			break;
 		}
@@ -403,10 +459,10 @@ public class PlayerManager : MonoBehaviour
 		//Enemy Gets Damage
 		int damage = Attack + attackMod;
 		if (boost)
-			damage = Mathf.RoundToInt (damage * 1.5f);
+			damage = Mathf.RoundToInt (damage * 1.25f);
 		if (element)
 			damage += Random.Range (3, 8);
-		int defense = Mathf.RoundToInt (enemyDefense * 0.25f);
+		int defense = Mathf.RoundToInt (enemyDefense * 0.45f);
 		if (element)
 			defense += Random.Range (3, 8);
 		Mathf.Max (enemy.CurrentHealth -= (damage - defense), 0);
@@ -416,10 +472,10 @@ public class PlayerManager : MonoBehaviour
 			//Player Gets Damage
 			damage = enemyDamage;
 			if (weaken)
-				damage = Mathf.RoundToInt (damage * 1.5f);
+				damage = Mathf.RoundToInt (damage * 1.25f);
 			if (enemyElement)
 				damage += Random.Range (5, 15);
-			defense = (int)Math.Round ((double)(defenseMod + Defense) * 0.25);
+			defense = (int)Math.Round ((double)(defenseMod + Defense) * 0.45f);
 			if (enemyElement)
 				defense += Random.Range (3, 8);
 			Mathf.Max (CurrentHealth -= (damage - defense), 0);

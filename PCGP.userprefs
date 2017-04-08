@@ -2,8 +2,15 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ANN\NeuralNetwork.cs">
     <Files>
-      <File FileName="Assets\Scripts\ANN\NeuralNetwork.cs" Line="130" Column="13" />
-      <File FileName="Assets\Scripts\ANN\ControlNetwork.cs" Line="131" Column="4" />
+      <File FileName="Assets\Scripts\ANN\NeuralNetwork.cs" Line="71" Column="6" />
+      <File FileName="Assets\Scripts\ANN\ControlNetwork.cs" Line="156" Column="4" />
+      <File FileName="Assets\Scripts\Manager\PlayerManager.cs" Line="465" Column="57" />
+      <File FileName="Assets\Scripts\Characters\Enemy.cs" Line="55" Column="88" />
+      <File FileName="Assets\Scripts\Manager\PCGBoardManager.cs" Line="280" Column="32" />
+      <File FileName="Assets\Scripts\Mechanic\Item.cs" Line="50" Column="3" />
+      <File FileName="Assets\Scripts\Mechanic\Chest.cs" Line="48" Column="29" />
+      <File FileName="Assets\Scripts\Characters\Player.cs" Line="114" Column="7" />
+      <File FileName="Assets\Scripts\Mechanic\Weapon.cs" Line="13" Column="39" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

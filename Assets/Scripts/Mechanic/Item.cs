@@ -37,6 +37,19 @@ public class Item : MonoBehaviour
 
 	private SpriteRenderer spriteRenderer;
 
+	public Item (Item item)
+	{
+		this.type = item.type;
+		this.attackMod = item.attackMod;
+		this.defenseMod = item.defenseMod;
+		this.spriteRenderer = item.spriteRenderer;
+	}
+
+	public Item ()
+	{
+		
+	}
+
 	public virtual void RandomItemInit ()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer> ();
