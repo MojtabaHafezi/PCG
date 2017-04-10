@@ -91,12 +91,12 @@ public class NeuralNetwork
 		for (int i = 0; i < numberNodes; i++) {
 			for (int j = 0; j < numberChildNodes; j++) {
 				number = Random.Range (min, max);
-				weights [i, j] = number / 100.0 - 1;
+				weights [i, j] = (number / 100.0) - 1;
 			}
 		}
 		for (int k = 0; k < numberChildNodes; k++) {
 			number = Random.Range (min, max);
-			biasWeights [k] = number / 100.0 - 1;
+			biasWeights [k] = (number / 100.0) - 1;
 		}
 
 	}

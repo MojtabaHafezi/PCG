@@ -43,7 +43,7 @@ public class Player : Movement
 	private void Update ()
 	{
 		//Only move out of battle
-		if (!PlayerManager.instance.isFighting) {
+		if (!PlayerManager.instance.IsFighting) {
 			
 		
 			int horizontal = 0;     //Used to store the horizontal move direction.
@@ -111,8 +111,8 @@ public class Player : Movement
 					PlayerManager.instance.UpdateInventory (newItem);
 				} else {
 					if (other.gameObject.GetComponent<Chest> ().decision == 2) {
-						
-						PlayerManager.instance.UpdateInventory (other.gameObject.GetComponent<Chest> ().weapon);
+						Weapon newWeapon = new Weapon (other.gameObject.GetComponent<Chest> ().weapon);
+						PlayerManager.instance.UpdateInventory (newWeapon);
 					}
 				}
 			}

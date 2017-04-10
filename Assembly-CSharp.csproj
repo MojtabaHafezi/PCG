@@ -73,6 +73,7 @@
      <Compile Include="Assets\Scripts\Windows\GUIAttributes.cs" />
      <Compile Include="Assets\Scripts\Windows\GameOverScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\GuildScreen.cs" />
+     <Compile Include="Assets\Scripts\Windows\LogPanel.cs" />
      <Compile Include="Assets\Scripts\Windows\PCGDungeonScreen.cs" />
      <Compile Include="Assets\Scripts\Windows\Screens.cs" />
      <Compile Include="Assets\Scripts\Windows\ShopScreen.cs" />

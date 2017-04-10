@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ControlNetwork
 {
@@ -124,35 +125,36 @@ public class ControlNetwork
 		message += "Input Layer: \n";
 		message += "Node Values: \n";
 		for (int i = 0; i < Input.numberNodes; i++) {
-			message += Input.calcOutput [i] + ";";
+			message += Input.calcOutput [i].ToString ("F2") + ";";
 		}
 		message += "\nWeights: \n";
 		for (int i = 0; i < Input.numberNodes; i++) {
 			for (int j = 0; j < Input.numberChildNodes; j++) {
-				message += Input.weights [i, j] + ";";
+				message += Input.weights [i, j].ToString ("F5") + ";";
 			}
 		}
 		message += "\nBias Weights: \n";
 		for (int j = 0; j < Input.numberChildNodes; j++) {
-			message += Input.biasWeights [j] + ";";
+			message += Input.biasWeights [j].ToString ("F5") + ";";
 		}
 		message += "\nHidden Layer: \n";
 
 		message += "Weights: \n";
 		for (int i = 0; i < Hidden.numberNodes; i++) {
 			for (int j = 0; j < Hidden.numberChildNodes; j++) {
-				message += Hidden.weights [i, j] + ";";
+				message += Hidden.weights [i, j].ToString ("F5") + ";";
 			}
 		}
 		message += "\nBias Weights: \n";
 		for (int j = 0; j < Hidden.numberChildNodes; j++) {
-			message += Hidden.biasWeights [j] + ";";
+			message += Hidden.biasWeights [j].ToString ("F5") + ";";
 		}
 
 		message += "\nOutput Layer: \n";
 
 		for (int i = 0; i < Output.numberNodes; i++) {
-			message += Output.calcOutput [i] + ";";
+			message += Output.calcOutput [i].ToString ("F3") + ";";
+	
 		}
 
 		//Debug.Log (message);

@@ -13,7 +13,6 @@ public class PlayerManager : MonoBehaviour
 
 	public int CurrentHealth{ get; set; }
 
-
 	public int Attack { get; set; }
 
 	public int Defense{ get; set; }
@@ -22,10 +21,12 @@ public class PlayerManager : MonoBehaviour
 
 	public int Element{ get; set; }
 
+	public bool element;
 
 	//Equipment/Inventory related components
 	public int attackMod, defenseMod;
 	private Dictionary<String, Item> inventory;
+	public static float DefenseFactor = 0.25f;
 
 	//Messages for player with auto close
 	public GameObject messageWindow;
@@ -34,33 +35,51 @@ public class PlayerManager : MonoBehaviour
 	private float delay;
 	private bool closed;
 
-
 	// Battle Window Setup
 	public GameObject battleWindow;
 	public GameObject actionsWindow;
 	public GameObject hudWindow;
-	public bool isFighting;
+	public GameObject Log;
+	public Text logText;
+	public bool IsFighting;
 
 	//Enemy
 	public Enemy enemy;
 	Slider enemySlider;
 	Slider playerSlider;
+	public bool enemyElement;
 
 	public GameObject GameOverScreen;
 	public bool IsDead;
 	public bool IsEnemyFleeing;
 
+	//CONSTANTS
+	public const double GOLDMIN = 0;
+	public const double GOLDMAX = 2000;
+	public const double HEALTHMIN = 0;
+	public const double HEALTHMAX = 200;
+	public const double DIFFMIN = -100;
+	public const double DIFFMAX = 100;
+	public int playerStartHealth;
+	public int enemyStartHealth;
 
 	//Artifical Neuronal Network
 	public ControlNetwork ANN = new ControlNetwork ();
 	public  const int TESTNUMBER = 40;
+	//number of input and output neurons (not hidden!)
+	public const int TOTALNEURONS = 11;
+	public const int INPUTNEURONS = 8;
+	public const int OUTPUTNEURONS = 3;
+	public const int HIDDENNEURONS = 5;
+	public const bool CONTROL = true;
+	public double[] InputForNeurons;
 	//Class difference has 3 patterns, 001, 010, 100 - from good, normal and bad
 
 	//Training data: when the enemy is too weak to begin with -> flee
 	//if the player is weak -> special
 	//if not too much difference in skills -> fight
 	//when player is somewhat weak -> special
-	public double[,] Trainingsset = new double[TESTNUMBER, 11] {
+	public double[,] Trainingsset = new double[TESTNUMBER, TOTALNEURONS] {
 		//Health, Player Health, Difference Att, Difference Def, Class difference (3 input), Gold of player ||out: att, special, flee
 		{ 1.0, 1.0, 0.1, 0.1, 0, 0, 1, 0.02, 0, 1, 0 },
 		{ 0.5, 1.0, 0.1, 0.1, 1, 0, 0, 0.02, 0, 0, 1 },
@@ -102,28 +121,30 @@ public class PlayerManager : MonoBehaviour
 		{ .50, .45, 0.45, 0.45, 0, 1, 0, 0.15, 0, 1, 0 },
 		{ .90, .95, 0.25, 0.25, 1, 0, 0, 0.05, 0, 0, 1 },
 		{ .95, .45, 0.15, 0.15, 0, 1, 0, 0.02, 0, 0, 1 }
-
 	};
 
 
 	public void InititalizeANN ()
 	{
-		ANN.Initialize (8, 3, 5);
+		//first: input, second: output, third: hidden layer
+		ANN.Initialize (INPUTNEURONS, OUTPUTNEURONS, HIDDENNEURONS);
 		ANN.SetLearningRate (0.3);
 		ANN.SetMomentum (true, 0.8);
+		InputForNeurons = new double[TOTALNEURONS];
+		for (int i = 0; i < TOTALNEURONS; i++)
+			InputForNeurons [i] = 0;
 	}
 
 	public void TrainANN ()
 	{
-		Debug.Log (Trainingsset.Length + "Length");
 		double error = 1;
 		int counter = 0;
-		string message = "Pre Training";
+		string message = "Training \n";
 		message += ANN.ToStringData ();
-		Debug.Log (message);
-		while ((error > 0.00005)) {
+		//	Debug.Log (message);
+		while ((error > 0.01) && counter < 100000) {
 			error = 0;
-			counter++;
+		
 			for (int i = 0; i < TESTNUMBER; i++) {
 				ANN.GiveInput (0, Trainingsset [i, 0]);
 				ANN.GiveInput (1, Trainingsset [i, 1]);
@@ -143,11 +164,12 @@ public class PlayerManager : MonoBehaviour
 				ANN.BackPropogate ();
 
 			}
+			counter++;
 			error = error / TESTNUMBER;
+			//Debug.Log ("Training: error is" + error);
 		}
 		//Debug.Log (error);
-		Debug.Log (ANN.ToStringData ());
-
+		Debug.Log (message + "\n\n" + ANN.ToStringData ());
 	}
 
 	void Awake ()
@@ -157,33 +179,32 @@ public class PlayerManager : MonoBehaviour
 		} else if (instance != this) {
 			Destroy (gameObject);
 		}
-
 		DontDestroyOnLoad (gameObject);
 	
 		inventory = new Dictionary<String, Item> ();
 		closeDelay = 2.0f;
-		messageWindow.SetActive (false);
-		battleWindow.SetActive (false);
-		actionsWindow.SetActive (false);
-		hudWindow.SetActive (false);
+		ActivateWindows (false);
 		closed = true;
-		isFighting = IsDead = IsEnemyFleeing = false;
+		IsFighting = IsDead = IsEnemyFleeing = false;
 
-		Attack = UnityEngine.Random.Range (10, 12);
-		Defense = UnityEngine.Random.Range (10, 12);
-		Element = Random.Range (0, 3);
-		Gold = 0;
-		Health = CurrentHealth = Random.Range (100, 200);
+		//Initialize the players, the network and train ANN
+		InitializePlayer ();
 		InititalizeANN ();
 		TrainANN ();
 	}
 
+	private void ActivateWindows (bool value)
+	{
+		messageWindow.SetActive (value);
+		battleWindow.SetActive (value);
+		actionsWindow.SetActive (value);
+		hudWindow.SetActive (value);
+		Log.SetActive (value);
+	}
+
 	void OnDisable ()
 	{
-		messageWindow.SetActive (false);
-		battleWindow.SetActive (false);
-		actionsWindow.SetActive (false);
-		hudWindow.SetActive (false);
+		ActivateWindows (false);
 	}
 
 	void OnEnable ()
@@ -194,18 +215,18 @@ public class PlayerManager : MonoBehaviour
 		battleWindow.SetActive (false);
 		actionsWindow.SetActive (false);
 		hudWindow.SetActive (true);
+		Log.SetActive (true);
 		closed = true;
-		isFighting = IsDead = false;
+		IsFighting = IsDead = false;
 
 		//Attack = UnityEngine.Random.Range (10, 12);
 		//Defense = UnityEngine.Random.Range (10, 12);
 		//Gold = 0;
-		//Health = CurrentHealth = 100;
+		//CurrentHealth = Health;
 	}
 
 	public  void UpdateInventory (Item item)
 	{
-		
 		String message = "Found ";
 		Item getItem = null;
 		switch (item.type) {
@@ -267,6 +288,17 @@ public class PlayerManager : MonoBehaviour
 		closed = false;
 	}
 
+	public void InitializePlayer ()
+	{
+		Attack = UnityEngine.Random.Range (10, 12);
+		Defense = UnityEngine.Random.Range (10, 12);
+		Element = Random.Range (0, 3);
+		Gold = 0;
+		Health = CurrentHealth = Random.Range (100, 200);
+		Gold = Random.Range (0, 1000);
+		inventory.Clear ();
+	}
+
 	public void ShowActions ()
 	{
 		if (!IsDead)
@@ -280,18 +312,26 @@ public class PlayerManager : MonoBehaviour
 
 	public void StartBattle ()
 	{
+
 		battleWindow.SetActive (true);
 		hudWindow.SetActive (false);
 		HideActions ();
 		ShowMessage ("Wild monster encountered!", 1.0f);
 		enemy = new Enemy ();
-		//CurrentHealth = Health;
+		// Taking the players health for calculating the networks error
+		playerStartHealth = CurrentHealth;
+		enemyStartHealth = enemy.CurrentHealth;
 		playerSlider = GameObject.FindGameObjectWithTag ("PlayerHealth").gameObject.GetComponent<Slider> ();
 		enemySlider = GameObject.FindGameObjectWithTag ("EnemyHealth").gameObject.GetComponent<Slider> ();
-		UpdateStats ();
+		UpdateGUI ();
+		element = enemyElement = false;
+		ElementDifferentiation ();
+		//Feed the ANN with inputs and feed forward for output
+		//FeedANN ();
+
 		Invoke ("ShowActions", 1);
 		IsEnemyFleeing = false;
-		isFighting = true;
+		IsFighting = true;
 
 	}
 
@@ -301,13 +341,14 @@ public class PlayerManager : MonoBehaviour
 		hudWindow.SetActive (true);
 		battleWindow.SetActive (false);
 		enemy = null;
-		isFighting = IsEnemyFleeing = false;
+		IsFighting = IsEnemyFleeing = false;
+		//TRAIN ANN here -> IsDead -> good job boy!
+
 		if (IsDead) {
-			isFighting = true;
+			hudWindow.SetActive (false);
+			IsFighting = true;
 			Invoke ("GameOver", 1);
 		}
-	
-
 	}
 
 	private void Update ()
@@ -324,10 +365,11 @@ public class PlayerManager : MonoBehaviour
 
 
 		if (CurrentHealth <= 0 && !IsDead) {
-			isFighting = true;
+			IsFighting = true;
 			IsDead = true;
 			ShowMessage ("You died...", 1);
 			Invoke ("CloseBattle", 2);
+			RetrainANN (); //No changes to the Network- ANN beat player
 		}
 
 
@@ -335,6 +377,7 @@ public class PlayerManager : MonoBehaviour
 
 	public void GameOver ()
 	{
+		InitializePlayer ();
 		GameOverScreen.GetComponent<PCGDungeonScreen> ().ToGameOver ();
 	}
 
@@ -350,8 +393,9 @@ public class PlayerManager : MonoBehaviour
 	public void PlayerFlees ()
 	{
 		string message = "You have chosen to flee. ";
-		int enemyAttack = (int)UnityEngine.Random.Range (0, 2);
 
+
+		int enemyAttack = (int)UnityEngine.Random.Range (0, 4);
 		bool weaken = true;
 
 		message += " \nYour enemy has chosen: ";
@@ -364,6 +408,9 @@ public class PlayerManager : MonoBehaviour
 			break;
 		case 2:
 			message += "Power Attack.";
+			break;
+		case 3: 
+			message += "Special Attack";
 			break;
 		default:
 			break;
@@ -378,13 +425,17 @@ public class PlayerManager : MonoBehaviour
 		int damage = enemyDamage;
 		if (weaken)
 			damage = Mathf.RoundToInt (damage * 1.5f);
-		int defense = (int)Math.Round ((double)(defenseMod + Defense) * 0.25);
+		int defense = (int)Math.Round ((double)(defenseMod + Defense) * DefenseFactor);
 		Mathf.Max (CurrentHealth -= (damage - defense), 0);
 		message += string.Format ("\nDamage received: {0}", (damage - defense));
 
-		if (!IsDead)
+		if (!IsDead && CurrentHealth > 0) {
 			message += "\n You got away!";
-		UpdateStats ();
+			//ANN good enough that player decided to run
+			RetrainANN ();
+		}
+			
+		UpdateGUI ();
 		ShowMessage (message, 1);
 		ToLog (message);
 		Invoke ("CloseBattle", 1);
@@ -395,13 +446,30 @@ public class PlayerManager : MonoBehaviour
 	// 0= fast, 1 = norm, 2 = power; norm > fast > power > norm
 	public void DealDamages (int id)
 	{
-		string message = "You have chosen: ";
 		int enemyAttack = (int)UnityEngine.Random.Range (0, 4);
 		bool boost = false;
 		bool weaken = false;
-		bool element = false;
-		bool enemyElement = false;
+		string message = "";
+		//Feed network and receive the calculated outputs
+		FeedANN ();
+		if (CONTROL) {
+			int enemyDecision = ANN.GetMaxOutput ();
+			message += "Att: " + ANN.GetOutput (0).ToString ("F3") + "%;" + " Special: ";
+			message += ANN.GetOutput (1).ToString ("F3") + "%;" + " Flee: " + ANN.GetOutput (2).ToString ("F3") + "%.\n";
+			if (enemyDecision == 0) {
+				enemyAttack = Random.Range (0, 3);
+			} else if (enemyDecision == 1) {
+				enemyAttack = 3;
+			} else if (enemyDecision == 2) {
+				EnemyFlees ();
+				message += "Your enemy is trying to flee.";
+				boost = true;
+			} else
+				Debug.Log ("ERROR FROM ANN ON GETMAXOUTPUT");
+		}
 
+		message += "You have chosen: ";
+		//STRENGTHS & WEAKNESSES
 		switch (id) {
 		case 0: 
 			message += "Fast Attack.";
@@ -424,37 +492,22 @@ public class PlayerManager : MonoBehaviour
 			if (enemyAttack == 1)
 				boost = true;
 			break;
-		//Special attack
+		//Special attack - always boosts on correct element strength
 		case 3:
 			message += "Special Attack: " + GetElement (Element);
-			if (Element == 0) {
-				if (enemy.Element == 2) {
-					element = true;
-					boost = true;
-				}
-
-			} else if (Element == 1) {
-				if (enemy.Element == 0) {
-					element = true;
-					boost = true;
-				}
-					
-			} else if (Element == 3) {
-				if (enemy.Element == 1) {
-					element = false;
-					boost = true;
-				}
-			}
+			boost = element;
 			break;
 		default:
 			break;
 		}
-		if (Random.Range (0, 15) == 1) {
-			EnemyFlees ();
-			message += "\n Your enemy is trying to flee.";
-			boost = true;
+		if (!CONTROL) {
+			if (Random.Range (0, 15) == 1) {
+				EnemyFlees ();
+				message += "\n Your enemy is trying to flee.";
+				boost = true;
+			}
 		}
-			
+	
 		if (!IsEnemyFleeing) {
 			message += " \nYour enemy has chosen: ";
 			switch (enemyAttack) {
@@ -467,38 +520,17 @@ public class PlayerManager : MonoBehaviour
 			case 2:
 				message += "Power Attack.";
 				break;
+			//on Special attack: always boost for enemy if correct element
 			case 3:
 				message += "Special Attack " + GetElement (enemy.Element);
-				switch (enemy.Element) {
-				case 0:
-					if (Element == 2) {
-						weaken = true;
-						enemyElement = true;
-					}
-
-					break;
-				case 1:
-					if (Element == 0) {
-						weaken = true;
-						enemyElement = true;
-					}
-					break;
-				case 2: 
-					if (Element == 1) {
-						weaken = true;
-						enemyElement = true;
-					}
-					break;
-				default:
-					break;
-				}
+				weaken = enemyElement;
 				break;
 			default:
 				break;
 			}
 		}
 	
-
+		//CALCULATIONS
 		int enemyDamage = enemy.Attack;
 		int enemyDefense = enemy.Defense;
 		//Enemy Gets Damage
@@ -506,8 +538,8 @@ public class PlayerManager : MonoBehaviour
 		if (boost)
 			damage = Mathf.RoundToInt (damage * 1.25f);
 		if (element)
-			damage += Random.Range (3, 8);
-		int defense = Mathf.RoundToInt (enemyDefense * 0.45f);
+			damage += Random.Range (6, 12);
+		int defense = Mathf.RoundToInt (enemyDefense * DefenseFactor);
 		if (element)
 			defense -= Random.Range (3, 8);
 		Mathf.Max (enemy.CurrentHealth -= (damage - defense), 0);
@@ -519,8 +551,8 @@ public class PlayerManager : MonoBehaviour
 			if (weaken)
 				damage = Mathf.RoundToInt (damage * 1.25f);
 			if (enemyElement)
-				damage += Random.Range (5, 15);
-			defense = (int)Math.Round ((double)(defenseMod + Defense) * 0.45f);
+				damage += Random.Range (6, 12);
+			defense = (int)Math.Round ((double)(defenseMod + Defense) * DefenseFactor);
 			if (enemyElement)
 				defense -= Random.Range (3, 8);
 			Mathf.Max (CurrentHealth -= (damage - defense), 0);
@@ -528,24 +560,33 @@ public class PlayerManager : MonoBehaviour
 
 		}
 
+		//RESULTS
 		if (!IsDead && enemy.CurrentHealth <= 0) {
 			
 			message += string.Format ("\nYou won! You earned {0} gold!", enemy.Gold);
 			ToLog (message);
 			ShowMessage (message, 2.5f);
 			Gold += enemy.Gold;
-			CurrentHealth = Health;
-			UpdateStats ();
-			Invoke ("CloseBattle", 1);	
+			//CurrentHealth = Health;
+			UpdateGUI ();
+			//when the enemy dies -> correct decisions or wrong ones?
+			ChangeDesiredOutput ();
+			Invoke ("CloseBattle", 1);
+		
 		} else if (IsEnemyFleeing) {
 			message += "\n The enemy got away!";
-			CurrentHealth = Health;
-			UpdateStats ();
+			//The enemy got away -> strengthen ANN
+			ChangeDesiredOutput ();
+
+			// Restock some health to the player
+			CurrentHealth += (int)(CurrentHealth / 4);
+			UpdateGUI ();
 			ToLog (message);
 			ShowMessage (message, 2);
 			Invoke ("CloseBattle", 1);	
+
 		} else {
-			UpdateStats ();
+			UpdateGUI ();
 			ToLog (message);
 			ShowMessage (message, 2);
 
@@ -558,9 +599,8 @@ public class PlayerManager : MonoBehaviour
 	}
 
 		
-	private void UpdateStats ()
+	private void UpdateGUI ()
 	{
-
 		enemySlider.maxValue = enemy.Health;
 		enemySlider.value = enemy.CurrentHealth;
 		playerSlider.maxValue = Health;
@@ -589,6 +629,165 @@ public class PlayerManager : MonoBehaviour
 	public void ToLog (string message)
 	{
 		Debug.Log (message);
+		logText.text += message + "\n";
+	}
+
+	public void ResetPlayerHealth ()
+	{
+		CurrentHealth = Health;
+	}
+
+	//Decides on the strength and weakness of the player vs enemy
+	public void ElementDifferentiation ()
+	{
+		element = false;
+		enemyElement = false;
+		if (Element == 0) {
+			if (enemy.Element == 2)
+				element = true;
+		} else if (Element == 1) {
+			if (enemy.Element == 0)
+				element = true;
+	
+		} else if (Element == 2) {
+			if (enemy.Element == 1)
+				element = true;
+		}
+
+		switch (enemy.Element) {
+		case 0:
+			if (Element == 2)
+				enemyElement = true;
+			break;
+		case 1:
+			if (Element == 0)
+				enemyElement = true;
+			break;
+		case 2: 
+			if (Element == 1)
+				enemyElement = true;
+			break;
+		default:
+			break;
+		}
+	}
+
+
+	//Health: min = 0, max = 200
+	//Gold: min = 0, max = 5000
+	//Stats: min = -100, max = 100
+	public double Standardization (int x, double min, double max)
+	{
+		return ((double)((x - min) / (max - min)));
+	}
+
+
+	//Feed the ANN with input
+	//Health, Player Health, Difference Att, Difference Def, Class difference (3 input), Gold of player ||out: att, special, flee
+	//Class difference : 001 good, 010 norm, 100 bad
+	public void FeedANN ()
+	{
+		InputForNeurons [0] = Standardization (enemy.CurrentHealth, HEALTHMIN, HEALTHMAX);
+		InputForNeurons [1] = Standardization (CurrentHealth, HEALTHMIN, HEALTHMAX);
+		InputForNeurons [2] = Standardization (enemy.Attack - (Attack + attackMod), DIFFMIN, DIFFMAX);
+		InputForNeurons [3] = Standardization (enemy.Defense - (Defense + defenseMod), DIFFMIN, DIFFMAX);
+		if (element) {
+			InputForNeurons [4] = 1;
+			InputForNeurons [5] = 0;
+			InputForNeurons [6] = 0;
+
+		} else if (enemyElement) {
+			InputForNeurons [4] = 0;
+			InputForNeurons [5] = 0;
+			InputForNeurons [6] = 1;
+		} else {
+			InputForNeurons [4] = 0;
+			InputForNeurons [5] = 1;
+			InputForNeurons [6] = 0;
+		}
+		InputForNeurons [7] = Standardization (Gold, GOLDMIN, GOLDMAX);
+
+		
+		for (int i = 0; i < INPUTNEURONS; i++) {
+			ANN.GiveInput (i, InputForNeurons [i]);
+		}
+		ANN.FeedForward (); //calculate the outputs
+		// pass them back to the array
+		InputForNeurons [8] = ANN.GetOutput (0);
+		InputForNeurons [9] = ANN.GetOutput (1);
+		InputForNeurons [10] = ANN.GetOutput (2);
+		//Debug.Log (ANN.ToStringData ());
+	}
+
+	// strengthen or weaken the weights
+	private void RetrainANN ()
+	{
+		double error = 1;
+		int counter = 0;
+		//Set Neurons
+		for (int i = 0; i < INPUTNEURONS; i++) {
+			ANN.GiveInput (i, InputForNeurons [i]);
+		}
+		ANN.DesiredOutput (0, InputForNeurons [8]);
+		ANN.DesiredOutput (1, InputForNeurons [9]);
+		ANN.DesiredOutput (2, InputForNeurons [10]);
+
+		while ((error > 0.1) && (counter < 2500)) {
+			//only 1 training set -> no measure error calc required
+			ANN.FeedForward ();
+			error = ANN.CalculateError ();
+			ANN.BackPropogate ();
+			counter++;
+		}
+		Debug.Log ("Retraining network!\n" + ANN.ToStringData ());
+	}
+
+	// Did the enemy decide correctly? if yes -> strengthen ANN, else weaken
+	private void ChangeDesiredOutput ()
+	{
+		//depending on the pattern we decide to Retrain
+		switch (ANN.GetMaxOutput ()) {
+		case 0:
+			//Attack - enemy died , player survived- enough damage?
+			if (!(CurrentHealth < (int)(playerStartHealth * 0.9f))) {
+				InputForNeurons [8] = 0;
+				InputForNeurons [9] = 0;
+				InputForNeurons [10] = 1;
+			}
+			RetrainANN ();
+			break;
+		case 1: 
+			//Special
+			if (!(CurrentHealth < (int)(playerStartHealth * 0.9f))) {
+				//enemy died and didnt damage enough - try fleeing next time
+				InputForNeurons [8] = 0;
+				InputForNeurons [9] = 0;
+				InputForNeurons [10] = 1;
+			}
+			RetrainANN ();
+			break;
+		case 2: 
+			//Flee - if alive > strengthen ANN else wrong decision
+			//if enemy died OR player had less than 75% of his hp OR (player had more than 90% of his hp AND enemy died)
+			if (!(enemy.CurrentHealth > 0) || (CurrentHealth <= (int)(playerStartHealth * 0.75f)) || ((CurrentHealth >= (int)(playerStartHealth * 0.9f)) && enemy.CurrentHealth <= 0)) {
+				int random = Random.Range (0, 2);
+				if (random == 0) {
+					//if the enemy dies - try to go with att
+					InputForNeurons [8] = 1;
+					InputForNeurons [9] = 0;
+					InputForNeurons [10] = 0;
+				} else {
+					//if the enemy dies - try to go with special
+					InputForNeurons [8] = 0;
+					InputForNeurons [9] = 1;
+					InputForNeurons [10] = 0;
+				}
+			}
+			RetrainANN ();
+			break;
+		default:
+			break;
+		}
 	}
 
 

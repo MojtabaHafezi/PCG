@@ -31,22 +31,22 @@ public class Enemy
 		float factor = 0f;
 		switch (random) {
 		case 0:
-			factor = 0.5f; 
+			factor = 0.15f; 
 			break;
 		case 1:
-			factor = 0.75f;
+			factor = 0.25f;
 			break;
 		case 2:
-			factor = 0.9f;
+			factor = 0.35f;
 			break;
 		case 3:
-			factor = 1.1f;
+			factor = 0.75f;
 			break;
 		case 4: 
-			factor = 1.25f;
+			factor = 0.95f;
 			break;
 		case 5: 
-			factor = 1.5f;
+			factor = 1.25f;
 			break;
 		default:
 			break;
