@@ -1,17 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ANN\HiddenLayer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Manager\PCGBoardManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\ANN\NeuralNetwork.cs" Line="17" Column="12" />
-      <File FileName="Assets\Scripts\ANN\Layer.cs" Line="45" Column="25" />
-      <File FileName="Assets\Scripts\ANN\OutputLayer.cs" Line="12" Column="3" />
-      <File FileName="Assets\Scripts\ANN\HiddenLayer.cs" Line="23" Column="42" />
-      <File FileName="Assets\Scripts\ANN\InputLayer.cs" Line="23" Column="42" />
-      <File FileName="Assets\Scripts\ANN\ControlNetwork.cs" Line="14" Column="37" />
-      <File FileName="Assets\Scripts\Manager\PlayerManager.cs" Line="134" Column="41" />
+      <File FileName="Assets\Scripts\ANN\Layer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ANN\InputLayer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ANN\HiddenLayer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ANN\OutputLayer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ANN\ControlNetwork.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Manager\PlayerManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Characters\Enemy.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Manager\PCGBoardManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Mechanic\Item.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Manager\PCGBoardManager.cs" Line="81" Column="56" />
+      <File FileName="Assets\Scripts\Mechanic\Item.cs" Line="91" Column="2" />
       <File FileName="Assets\Scripts\Mechanic\Chest.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Characters\Player.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Mechanic\Weapon.cs" Line="1" Column="1" />

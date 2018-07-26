@@ -12,31 +12,12 @@ public class HiddenLayer : Layer
 
 	}
 
-	//Randomize the weights between -1 and 1 - also in bias
-	public  void RandomizeWeights ()
-	{
-		int min = 0;
-		int max = 201;
-		int number;
 
-		for (int i = 0; i < numberOfNodes; i++) {
-			for (int j = 0; j < numberOfChildNodes; j++) {
-				number = Random.Range (min, max);
-				weights [i, j] = (number / 100.0) - 1;
-			}
-		}
-		for (int k = 0; k < numberOfChildNodes; k++) {
-			number = Random.Range (min, max);
-			biasWeights [k] = (number / 100.0) - 1;
-		}
-
-	}
 
 	public override void CalculatedOutput ()
 	{
 		double sum;
-
-
+	
 		for (int i = 0; i < numberOfNodes; i++) {
 			sum = 0;
 			for (int j = 0; j < numberOfParentNodes; j++) {

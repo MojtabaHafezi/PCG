@@ -56,7 +56,7 @@ public class ControlNetwork
 	}
 
 	//after the output has been calculated, the weights need to be adjusted
-	public void BackPropogate ()
+	public void BackPropagate ()
 	{
 		Output.CalculateErrors ();
 		Hidden.CalculateErrors ();
@@ -116,54 +116,4 @@ public class ControlNetwork
 		message += Output.ToStringData ();
 		return message;
 	}
-
-	/*
-
-
-
-
-	public string ToStringData ()
-	{
-		string message = "";
-		message += "Input Layer: \n";
-		message += "Node Values: \n";
-		for (int i = 0; i < Input.numberNodes; i++) {
-			message += Input.calcOutput [i].ToString ("F2") + ";";
-		}
-		message += "\nWeights: \n";
-		for (int i = 0; i < Input.numberNodes; i++) {
-			for (int j = 0; j < Input.numberChildNodes; j++) {
-				message += Input.weights [i, j].ToString ("F5") + ";";
-			}
-		}
-		message += "\nBias Weights: \n";
-		for (int j = 0; j < Input.numberChildNodes; j++) {
-			message += Input.biasWeights [j].ToString ("F5") + ";";
-		}
-		message += "\nHidden Layer: \n";
-
-		message += "Weights: \n";
-		for (int i = 0; i < Hidden.numberNodes; i++) {
-			for (int j = 0; j < Hidden.numberChildNodes; j++) {
-				message += Hidden.weights [i, j].ToString ("F5") + ";";
-			}
-		}
-		message += "\nBias Weights: \n";
-		for (int j = 0; j < Hidden.numberChildNodes; j++) {
-			message += Hidden.biasWeights [j].ToString ("F5") + ";";
-		}
-
-		message += "\nOutput Layer: \n";
-
-		for (int i = 0; i < Output.numberNodes; i++) {
-			message += Output.calcOutput [i].ToString ("F3") + ";";
-	
-		}
-
-		//Debug.Log (message);
-		return message;
-	}
-
-}
-*/
 }

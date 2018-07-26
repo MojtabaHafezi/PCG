@@ -62,15 +62,19 @@ public class PlayerManager : MonoBehaviour
 	public const double DIFFMAX = 100;
 	public int playerStartHealth;
 	public int enemyStartHealth;
+	public int playerStartGold;
 
 	//Artifical Neuronal Network
 	public ControlNetwork ANN = new ControlNetwork ();
-	public  const int TESTNUMBER = 40;
+	//FOR DEMO
+	//public  const int TESTNUMBER = 40;
+	public  const int TESTNUMBER = 3;
+
 	//number of input and output neurons (not hidden!)
 	public const int TOTALNEURONS = 11;
 	public const int INPUTNEURONS = 8;
 	public const int OUTPUTNEURONS = 3;
-	public const int HIDDENNEURONS = 5;
+	public const int HIDDENNEURONS = 10;
 	public const bool CONTROL = true;
 	public double[] InputForNeurons;
 	//Class difference has 3 patterns, 001, 010, 100 - from good, normal and bad
@@ -79,6 +83,17 @@ public class PlayerManager : MonoBehaviour
 	//if the player is weak -> special
 	//if not too much difference in skills -> fight
 	//when player is somewhat weak -> special
+
+	//FOR DEMO
+	public double[,] Trainingsset = new double[TESTNUMBER, TOTALNEURONS] {
+		//Health, Player Health, Difference Att, Difference Def, Class difference (3 input), Gold of player ||out: att, special, flee00
+		{ 1.0, 1.0, 0.5, 0.5, 0, 1, 0, 0.05, 1, 0, 0 },
+		{ 1.0, 1.0, 0.5, 0.5, 1, 0, 0, 0.05, 0, 0, 1 },
+		{ 1.0, 1.0, 0.5, 0.5, 0, 0, 1, 0.05, 0, 1, 0 },
+		//{ 1.0, 1.0, 0.25, 0.25, 0, 1, 0, 0.05, 0, 0, 1 },
+		//{ 1.0, 1.0, 0.6, 0.6, 0, 1, 0, 0.05, 1, 0, 0 }
+	};
+	/*
 	public double[,] Trainingsset = new double[TESTNUMBER, TOTALNEURONS] {
 		//Health, Player Health, Difference Att, Difference Def, Class difference (3 input), Gold of player ||out: att, special, flee
 		{ 1.0, 1.0, 0.1, 0.1, 0, 0, 1, 0.02, 0, 1, 0 },
@@ -122,7 +137,7 @@ public class PlayerManager : MonoBehaviour
 		{ .90, .95, 0.25, 0.25, 1, 0, 0, 0.05, 0, 0, 1 },
 		{ .95, .45, 0.15, 0.15, 0, 1, 0, 0.02, 0, 0, 1 }
 	};
-
+*/
 
 	public void InititalizeANN ()
 	{
@@ -161,7 +176,7 @@ public class PlayerManager : MonoBehaviour
 
 				ANN.FeedForward ();
 				error += ANN.CalculateError ();
-				ANN.BackPropogate ();
+				ANN.BackPropagate ();
 
 			}
 			counter++;
@@ -293,9 +308,8 @@ public class PlayerManager : MonoBehaviour
 		Attack = UnityEngine.Random.Range (10, 12);
 		Defense = UnityEngine.Random.Range (10, 12);
 		Element = Random.Range (0, 3);
-		Gold = 0;
 		Health = CurrentHealth = Random.Range (100, 200);
-		Gold = Random.Range (0, 1000);
+		Gold = Random.Range (100, 1000);
 		inventory.Clear ();
 	}
 
@@ -321,6 +335,7 @@ public class PlayerManager : MonoBehaviour
 		// Taking the players health for calculating the networks error
 		playerStartHealth = CurrentHealth;
 		enemyStartHealth = enemy.CurrentHealth;
+		playerStartGold = Gold;
 		playerSlider = GameObject.FindGameObjectWithTag ("PlayerHealth").gameObject.GetComponent<Slider> ();
 		enemySlider = GameObject.FindGameObjectWithTag ("EnemyHealth").gameObject.GetComponent<Slider> ();
 		UpdateGUI ();
@@ -724,6 +739,9 @@ public class PlayerManager : MonoBehaviour
 	{
 		double error = 1;
 		int counter = 0;
+		//Set the 
+
+
 		//Set Neurons
 		for (int i = 0; i < INPUTNEURONS; i++) {
 			ANN.GiveInput (i, InputForNeurons [i]);
@@ -732,11 +750,11 @@ public class PlayerManager : MonoBehaviour
 		ANN.DesiredOutput (1, InputForNeurons [9]);
 		ANN.DesiredOutput (2, InputForNeurons [10]);
 
-		while ((error > 0.1) && (counter < 2500)) {
+		while ((error > 0.05) && (counter < 40000)) {
 			//only 1 training set -> no measure error calc required
 			ANN.FeedForward ();
 			error = ANN.CalculateError ();
-			ANN.BackPropogate ();
+			ANN.BackPropagate ();
 			counter++;
 		}
 		Debug.Log ("Retraining network!\n" + ANN.ToStringData ());
@@ -749,7 +767,11 @@ public class PlayerManager : MonoBehaviour
 		switch (ANN.GetMaxOutput ()) {
 		case 0:
 			//Attack - enemy died , player survived- enough damage?
-			if (!(CurrentHealth < (int)(playerStartHealth * 0.9f))) {
+			if ((CurrentHealth > (int)(playerStartHealth * 0.8f))) {
+				//if not even 20% damage were done ->flee!
+				InputForNeurons [0] = Standardization (enemyStartHealth, HEALTHMIN, HEALTHMAX);
+				InputForNeurons [1] = Standardization (playerStartGold, HEALTHMIN, HEALTHMAX);
+				InputForNeurons [7] = Standardization (playerStartGold, GOLDMIN, GOLDMAX);
 				InputForNeurons [8] = 0;
 				InputForNeurons [9] = 0;
 				InputForNeurons [10] = 1;
@@ -758,8 +780,11 @@ public class PlayerManager : MonoBehaviour
 			break;
 		case 1: 
 			//Special
-			if (!(CurrentHealth < (int)(playerStartHealth * 0.9f))) {
+			if ((CurrentHealth > (int)(playerStartHealth * 0.8f))) {
 				//enemy died and didnt damage enough - try fleeing next time
+				InputForNeurons [0] = Standardization (enemyStartHealth, HEALTHMIN, HEALTHMAX);
+				InputForNeurons [1] = Standardization (playerStartGold, HEALTHMIN, HEALTHMAX);
+				InputForNeurons [7] = Standardization (playerStartGold, GOLDMIN, GOLDMAX);
 				InputForNeurons [8] = 0;
 				InputForNeurons [9] = 0;
 				InputForNeurons [10] = 1;
@@ -768,8 +793,8 @@ public class PlayerManager : MonoBehaviour
 			break;
 		case 2: 
 			//Flee - if alive > strengthen ANN else wrong decision
-			//if enemy died OR player had less than 75% of his hp OR (player had more than 90% of his hp AND enemy died)
-			if (!(enemy.CurrentHealth > 0) || (CurrentHealth <= (int)(playerStartHealth * 0.75f)) || ((CurrentHealth >= (int)(playerStartHealth * 0.9f)) && enemy.CurrentHealth <= 0)) {
+			// else -> no use of running- try damaging the user
+			if (!(enemy.CurrentHealth >= 0)) {
 				int random = Random.Range (0, 2);
 				if (random == 0) {
 					//if the enemy dies - try to go with att

@@ -1,0 +1,170 @@
+Initialize engine version: 5.5.0f3 (38b4efef76f0)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 960M (ID=0x139b)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+    Driver:   21.20.16.4550
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+- Completed reload, in  0.272 seconds
+Platform assembly: D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\Programmierung\GAMEDEV\Unity Projects\PCGP\Build\PCGP_ANN_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+The referenced script on this Behaviour (Game Object 'Stats') is missing!
+ 
+(Filename:  Line: 1754)
+
+UnloadTime: 3.683159 ms
+DontDestroyOnLoad only work for root GameObjects or components on root GameObjects.
+ 
+(Filename:  Line: 447)
+
+Training 
+Input Layer: 
+Node Values: 
+0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;
+Weights: 
+-0.61000;0.64000;-0.99000;0.23000;0.69000;0.10000;0.28000;0.60000;-0.84000;0.40000;0.14000;0.70000;-0.18000;-0.22000;-0.92000;-0.19000;-0.08000;0.27000;-0.23000;0.57000;-0.75000;-0.59000;-0.63000;-0.56000;0.44000;0.38000;-0.33000;-0.68000;0.53000;0.53000;-0.64000;0.00000;0.35000;0.05000;0.88000;-0.38000;-0.65000;-0.33000;-0.97000;-0.49000;0.68000;0.10000;-0.68000;-0.66000;-0.86000;-0.89000;-0.03000;0.89000;-0.85000;0.11000;-0.28000;-0.73000;0.54000;-0.62000;0.16000;0.24000;-0.44000;-0.86000;0.74000;-0.66000;0.35000;0.90000;0.53000;0.28000;0.93000;-0.41000;0.07000;0.96000;0.96000;0.76000;-0.14000;-0.99000;0.96000;-0.03000;-0.11000;0.33000;0.97000;-0.06000;0.75000;-0.75000;
+Bias Weights: 
+0.72000;0.62000;-0.60000;0.92000;0.41000;-0.13000;-0.64000;-0.81000;0.87000;0.30000;
+Hidden Layer: 
+Weights: 
+0.87000;0.12000;-0.49000;0.76000;0.45000;0.82000;-0.65000;0.67000;-0.26000;0.76000;-0.16000;-0.85000;-0.64000;-0.43000;0.10000;-0.52000;-0.57000;0.48000;0.93000;0.19000;-0.42000;-0.58000;-0.15000;-0.96000;0.10000;0.78000;0.46000;-0.72000;-0.82000;0.74000;
+Bias Weights: 
+0.75000;-0.03000;-0.83000;
+Output Layer: 
+0.000;0.000;0.000;
+
+Input Layer: 
+Node Values: 
+0.95;0.45;0.15;0.15;0.00;1.00;0.00;0.02;
+Weights: 
+-4.32067;3.22212;0.80764;-9.11665;5.76322;-6.82584;-0.49891;0.58133;1.20604;4.57369;6.09798;3.71937;-7.65684;-2.87128;-10.57333;2.71872;-0.13160;0.70620;-8.40438;4.82508;2.05670;-5.81077;-4.17721;4.28923;-2.05867;2.95786;0.18734;-0.70320;-2.97076;-7.92113;-1.22235;-2.68460;-1.83055;5.34875;2.39232;-0.16764;-1.00883;0.37734;-2.81576;-5.29554;0.83024;0.99642;-2.75205;-2.97017;-1.89352;-0.01319;0.88648;-0.08347;-2.88901;3.25839;0.35884;-3.34904;-1.36678;0.29153;-1.92236;0.40776;-3.24819;-2.74293;-1.69308;-1.50748;-1.93198;-0.58980;5.16813;4.25030;5.38096;-2.65473;2.20907;2.90207;4.63799;-6.51422;-3.80357;-11.28328;10.06461;9.75735;7.22326;-0.56803;3.90542;-1.65697;9.69554;-15.95607;
+Bias Weights: 
+-0.10894;-1.16434;-0.23374;2.34868;1.15071;-0.79674;-0.50260;-1.31802;0.42880;-2.46175;
+Hidden Layer: 
+Weights: 
+5.66803;-6.00931;-1.18491;-7.68659;-0.71671;5.87779;-7.54402;4.91124;-1.90068;-7.27959;8.03322;-7.74065;-9.48398;7.09711;-2.84485;3.34714;-6.59574;0.35134;3.02351;1.08050;-4.97900;-2.13249;2.03666;-3.10490;-6.75954;5.76754;-0.91230;-12.66145;-4.59473;9.91731;
+Bias Weights: 
+3.45675;-2.47243;-1.76299;
+Output Layer: 
+0.000;0.060;0.953;
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+DontDestroyOnLoad only work for root GameObjects or components on root GameObjects.
+ 
+(Filename:  Line: 447)
+
+DontDestroyOnLoad only work for root GameObjects or components on root GameObjects.
+ 
+(Filename:  Line: 447)
+
+Att: 0.908%; Special: 0.133%; Flee: 0.000%.
+You have chosen: Special Attack: Water 
+Your enemy has chosen: Power Attack.
+Damage dealt: 9
+Damage received: 5
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Retraining network!
+Input Layer: 
+Node Values: 
+0.53;0.89;0.49;0.49;0.00;1.00;0.00;0.48;
+Weights: 
+-4.31990;3.22270;0.80760;-9.11669;5.76151;-6.82581;-0.49895;0.58122;1.20599;4.57575;6.09835;3.71965;-7.65685;-2.87130;-10.57414;2.71874;-0.13162;0.70615;-8.40441;4.82606;2.05682;-5.81068;-4.17721;4.28922;-2.05894;2.95786;0.18733;-0.70322;-2.97077;-7.92080;-1.22223;-2.68451;-1.83055;5.34874;2.39205;-0.16764;-1.00884;0.37732;-2.81577;-5.29521;0.83024;0.99642;-2.75205;-2.97017;-1.89352;-0.01319;0.88648;-0.08347;-2.88901;3.25839;0.35965;-3.34843;-1.36682;0.29150;-1.92415;0.40779;-3.24823;-2.74304;-1.69313;-1.50531;-1.93198;-0.58980;5.16813;4.25030;5.38096;-2.65473;2.20907;2.90207;4.63799;-6.51422;-3.80355;-11.28326;10.06460;9.75735;7.22322;-0.56803;3.90542;-1.65697;9.69554;-15.95602;
+Bias Weights: 
+-0.10894;-1.16434;-0.23374;2.34868;1.15071;-0.79674;-0.50260;-1.31802;0.42880;-2.46175;
+Hidden Layer: 
+Weights: 
+5.66803;-6.00952;-1.18478;-7.68659;-0.71688;5.87790;-7.54402;4.91123;-1.90067;-7.27959;8.03321;-7.74065;-9.48398;7.09667;-2.84458;3.34714;-6.59574;0.35134;3.02351;1.08049;-4.97899;-2.13249;2.03663;-3.10488;-6.75954;5.76753;-0.91230;-12.66145;-4.59519;9.91760;
+Bias Weights: 
+3.45675;-2.47243;-1.76299;
+Output Layer: 
+0.908;0.133;0.000;
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+You have chosen to flee.  
+Your enemy has chosen: Fast Attack.
+Damage received: 9
+ You got away!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Found boots with an attack of 2 and a defense of 4
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Retraining network!
+Input Layer: 
+Node Values: 
+0.53;0.89;0.49;0.49;0.00;1.00;0.00;0.48;
+Weights: 
+-4.31990;3.22270;0.80760;-9.11669;5.76152;-6.82582;-0.49895;0.58122;1.20599;4.57575;6.09834;3.71965;-7.65685;-2.87130;-10.57414;2.71872;-0.13162;0.70615;-8.40441;4.82606;2.05681;-5.81068;-4.17721;4.28922;-2.05894;2.95785;0.18733;-0.70322;-2.97077;-7.92080;-1.22223;-2.68451;-1.83055;5.34874;2.39205;-0.16765;-1.00884;0.37732;-2.81577;-5.29521;0.83024;0.99642;-2.75205;-2.97017;-1.89352;-0.01319;0.88648;-0.08347;-2.88901;3.25839;0.35964;-3.34843;-1.36682;0.29150;-1.92415;0.40777;-3.24823;-2.74304;-1.69313;-1.50531;-1.93198;-0.58980;5.16813;4.25030;5.38096;-2.65473;2.20907;2.90207;4.63799;-6.51422;-3.80355;-11.28326;10.06460;9.75735;7.22322;-0.56804;3.90542;-1.65697;9.69554;-15.95602;
+Bias Weights: 
+-0.10895;-1.16434;-0.23374;2.34868;1.15072;-0.79676;-0.50260;-1.31802;0.42880;-2.46175;
+Hidden Layer: 
+Weights: 
+5.66803;-6.00951;-1.18478;-7.68659;-0.71688;5.87790;-7.54402;4.91123;-1.90067;-7.27960;8.03322;-7.74065;-9.48398;7.09667;-2.84458;3.34714;-6.59574;0.35134;3.02351;1.08049;-4.97899;-2.13249;2.03663;-3.10488;-6.75954;5.76753;-0.91230;-12.66145;-4.59519;9.91760;
+Bias Weights: 
+3.45674;-2.47242;-1.76299;
+Output Layer: 
+0.908;0.132;0.000;
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+You have chosen to flee.  
+Your enemy has chosen: Special Attack
+Damage received: 12
+ You got away!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Found boots with an attack of 18 and a defense of 21
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Retraining network!
+Input Layer: 
+Node Values: 
+0.53;0.89;0.49;0.49;0.00;1.00;0.00;0.48;
+Weights: 
+-4.31991;3.22270;0.80761;-9.11668;5.76152;-6.82584;-0.49895;0.58123;1.20599;4.57575;6.09833;3.71965;-7.65685;-2.87130;-10.57413;2.71869;-0.13162;0.70615;-8.40441;4.82606;2.05681;-5.81068;-4.17721;4.28922;-2.05894;2.95784;0.18733;-0.70321;-2.97077;-7.92080;-1.22224;-2.68451;-1.83055;5.34874;2.39205;-0.16766;-1.00884;0.37732;-2.81577;-5.29521;0.83024;0.99642;-2.75205;-2.97017;-1.89352;-0.01319;0.88648;-0.08347;-2.88901;3.25839;0.35963;-3.34843;-1.36681;0.29150;-1.92414;0.40774;-3.24823;-2.74304;-1.69313;-1.50531;-1.93198;-0.58980;5.16813;4.25030;5.38096;-2.65473;2.20907;2.90207;4.63799;-6.51422;-3.80356;-11.28326;10.06461;9.75735;7.22323;-0.56805;3.90542;-1.65697;9.69554;-15.95602;
+Bias Weights: 
+-0.10896;-1.16434;-0.23374;2.34868;1.15072;-0.79677;-0.50260;-1.31802;0.42880;-2.46175;
+Hidden Layer: 
+Weights: 
+5.66802;-6.00950;-1.18478;-7.68659;-0.71688;5.87790;-7.54402;4.91123;-1.90067;-7.27961;8.03324;-7.74065;-9.48398;7.09667;-2.84458;3.34714;-6.59573;0.35134;3.02351;1.08049;-4.97899;-2.13249;2.03663;-3.10488;-6.75954;5.76753;-0.91230;-12.66145;-4.59519;9.91760;
+Bias Weights: 
+3.45674;-2.47241;-1.76299;
+Output Layer: 
+0.908;0.132;0.000;
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+You have chosen to flee.  
+Your enemy has chosen: Special Attack
+Damage received: 14
+ You got away!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 35c8 -> priority: 1 
+  Thread -> id: 1d28 -> priority: 1 

@@ -2,3 +2,4 @@
 /[Ll]ibrary/
 /[Tt]emp/
 *.meta
+Assets/Scripts/ANN/NeuralNetwork.cs

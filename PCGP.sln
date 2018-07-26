@@ -1,9 +1,9 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{44B73E12-75ED-F429-2D89-D1B339A2D2EC}") = "PCGP", "Assembly-CSharp.csproj", "{9F235F6E-1E65-C73D-3A5B-F3159908726B}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCGP", "Assembly-CSharp.csproj", "{9F235F6E-1E65-C73D-3A5B-F3159908726B}"
 EndProject
-Project("{44B73E12-75ED-F429-2D89-D1B339A2D2EC}") = "PCGP", "Assembly-CSharp-Editor.csproj", "{A75E3C22-67BB-EDFB-2D3B-E6F7DEE60E4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCGP", "Assembly-CSharp-Editor.csproj", "{A75E3C22-67BB-EDFB-2D3B-E6F7DEE60E4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

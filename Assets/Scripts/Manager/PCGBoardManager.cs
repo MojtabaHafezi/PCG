@@ -121,7 +121,7 @@ public class PCGBoardManager : MonoBehaviour
 
 	public void Start ()
 	{
-		Random.InitState (1);
+		Random.InitState (6);
 	}
 
 	public void StartDungeon ()
@@ -130,7 +130,8 @@ public class PCGBoardManager : MonoBehaviour
 		//	Random.InitState (3);
 		gridPositions.Clear ();
 		outerWallPositions.Clear ();
-		maxBound = Random.Range (100, 250);
+		maxBound = 250;
+		//maxBound = Random.Range (100, 250);
 
 		BuildEssentialPath ();
 		BuildRandomPath ();
@@ -277,9 +278,9 @@ public class PCGBoardManager : MonoBehaviour
 				    chamberTilePos.x < maxBound && chamberTilePos.x > 0 &&
 				    chamberTilePos.y < maxBound && chamberTilePos.y > 0)
 					//chance to create a chest 
-				if (Random.Range (0, 60) == 1) {
+				if (Random.Range (0, 60) < 4) {
 					gridPositions.Add (chamberTilePos, TileType.chest);
-				} else if (Random.Range (0, 60) > 57) {
+				} else if (Random.Range (0, 60) > 56) {
 					gridPositions.Add (chamberTilePos, TileType.enemy);
 				} else {
 					gridPositions.Add (chamberTilePos, TileType.random);
